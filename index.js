@@ -1,28 +1,5 @@
-var pool = require('./_common/db.js');
-var TableMng = require('./_common/TableMng.js');
-
-var Cliente = require('./model/Cliente.js');
-var ClienteMng = require('./model/ClienteMng.js');
-
-var Aduana = require('./model/Aduana.js');
-var AduanaMng = require('./model/AduanaMng.js');
-
-var o = new Cliente();
-o.Id = 1;
-o.Nombre = 'Cliente Uno';
-// o.Codigo = '23';
-var oMgn = new ClienteMng(o);
-var oMng = new TableMng({
-    objMng: oMgn,
-    pool: pool
-});
-
-var oA = new Aduana();
-var oMngA = new AduanaMng(oA);
-var oTMngA = new TableMng({
-    objMng: oMngA,
-    pool: pool
-});
+var Factory = require('./model/Factory.js');
+var Common = require('../common/Common.js');
 
 const express = require('express')
 const app = express()
@@ -34,7 +11,33 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.get('/', (req, res) => oMng.Action('lst', (data) => res.send(JSON.stringify(data))));
-app.get('/aduana', (req, res) => oTMngA.Action('lst', (data) => res.send(JSON.stringify(data))));
+// app.get('/cliente', (req, res) => {
+//     var factory = new Factory();
+//     var o = factory.CreateObj('Cliente');
+//     var oTMng = factory.CreateMng(o);
+    
+//     oTMng.Action('lst', (data) => 
+//     res.send(JSON.stringify(data)))
+// });
+
+// app.get('/aduana', (req, res) => {
+//     var factory = new Factory();
+//     var o = factory.CreateObj('Aduana');
+//     var oTMng = factory.CreateMng(o);
+    
+//     oTMng.Action('lst', (data) => 
+//     res.send(JSON.stringify(data)))
+// });
+
+app.get(/.*/, function (req, res) {
+    var strReq = req.originalUrl;
+    strReq = Common.Capitalize(strReq.replace('/',''));
+    var factory = new Factory();
+    var o = factory.CreateObj(strReq);
+    var oTMng = factory.CreateMng(o);
+    
+    oTMng.Action('lst', (data) => 
+    res.send(JSON.stringify(data)))
+  })
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
