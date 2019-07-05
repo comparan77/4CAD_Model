@@ -13,6 +13,9 @@ var Transporte_tipoMng = require('./Transporte_tipoMng.js');
 var Transporte_linea = require('./Transporte_linea.js');
 var Transporte_lineaMng = require('./Transporte_lineaMng.js');
 
+var Mercancia_vendor = require('./Mercancia_vendor.js');
+var Mercancia_vendorMng = require('./Mercancia_vendorMng.js');
+
 // var o = new Cliente();
 // o.Id = 1;
 // o.Nombre = 'Cliente Uno';
@@ -35,7 +38,9 @@ function Factory() {
             o = new Transporte_tipo();
         } else if (type === "Transporte_linea") {
             o = new Transporte_linea();
-        }
+        } else if (type === "Mercancia_vendor") {
+            o = new Mercancia_vendor();
+	}
         
         o.type = type;
 
@@ -54,7 +59,10 @@ function Factory() {
             oMng = new Transporte_tipoMng(o)
         } else if (o.type === "Transporte_linea") {
             oMng = new Transporte_lineaMng(o)
+        } else if (o.type === "Mercancia_vendor") {
+            oMng = new Mercancia_vendorMng(o)
         }
+
 
         oTMng = new TableMng({
             objMng: oMng,
