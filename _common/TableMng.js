@@ -23,6 +23,14 @@ function TableMng() {
                 this.options.objMng = objMng;
         }
 
+        TableMng.prototype.Select = function(sql, values, callback, tran = null) {
+            var _ = this;
+            _.options.pool.query(sql, values, function(err, res, fields) {
+                if(err) throw err;
+                if(callback) callback(res);
+            });
+        }
+
         TableMng.prototype.Action = function(action, callback, tran = null) {
             var _ = this;
             var opcion = 0;
