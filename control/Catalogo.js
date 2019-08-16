@@ -4,8 +4,6 @@ function Catalogo () {};
 
 Catalogo.lstCatalogo = function(strObj, callback) {
 
-    // var strReq = req.originalUrl;
-    // strReq = Common.Capitalize(strReq.replace('/',''));
     var factory = new Factory();
     var o = factory.CreateObj(strObj);
     var oTMng = factory.CreateMng(o);
