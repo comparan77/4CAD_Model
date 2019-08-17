@@ -20,7 +20,7 @@ Catalogo.GetTransporteTipoByLinea = function(id, callback) {
     var o = factory.CreateObj('Transporte_linea_tipo');
     var oTMng = factory.CreateMng(o);
 
-    oTMng.Select(`select tt.Id, tt.Nombre 
+    oTMng.Select(`select tt.Id, tt.Nombre, tt.placa, tt.caja, tt.cont_1, tt.cont_2 
                     from transporte_linea_tipo tlt 
                     join transporte_linea tl on
                     tlt.id_transporte_linea = tl.id
