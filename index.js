@@ -14,10 +14,13 @@ app.use(function(req, res, next) {
 app.get('/aduana', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/cliente', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/documento', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
-app.get('/mercancia_vendor', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
+app.get('/vendor', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/transporte_linea', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/transporte_linea_tipo/:id', (req, res) => {
   Catalogo.GetTransporteTipoByLinea(req.params.id, (data) => res.send(data));
+})
+app.get('/vendor_mercancia/:id', (req, res) => {
+  Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(data));
 })
 
 function getStrReq(req) {

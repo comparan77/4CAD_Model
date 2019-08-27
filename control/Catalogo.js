@@ -31,4 +31,20 @@ Catalogo.GetTransporteTipoByLinea = function(id, callback) {
     }));
 }
 
+// Vendor mercancia
+// Get mercancia by vendor
+Catalogo.GetMercanciaByVendor = function(id, callback) {
+    var factory = new Factory();
+    var o = factory.CreateObj('Vendor_mercancia');
+    var oTMng = factory.CreateMng(o);
+
+    oTMng.Select(`select vm.Id, vm.Nombre
+                    from vendor_mercancia vm 
+                    join vendor v on
+                    vm.id_vendor = v.id
+                    where v.id = ?`, id, (data => {
+        callback(JSON.stringify(data));
+    }));
+}
+
 module.exports = Catalogo;

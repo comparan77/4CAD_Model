@@ -16,8 +16,11 @@ var Transporte_lineaMng = require('./Transporte_lineaMng.js');
 var Transporte_linea_tipo = require('./Transporte_linea_tipo.js');
 var Transporte_linea_tipoMng = require('./Transporte_linea_tipoMng.js');
 
-var Mercancia_vendor = require('./Mercancia_vendor.js');
-var Mercancia_vendorMng = require('./Mercancia_vendorMng.js');
+var Vendor = require('./Vendor.js');
+var VendorMng = require('./VendorMng.js');
+
+var Vendor_mercancia = require('./Vendor_mercancia.js');
+var Vendor_mercanciaMng = require('./Vendor_mercanciaMng.js');
 
 var Documento = require('./Documento.js');
 var DocumentoMng = require('./DocumentoMng.js');
@@ -44,8 +47,10 @@ function Factory() {
             o = new Transporte_tipo();
         } else if (type === "Transporte_linea") {
             o = new Transporte_linea();
-        } else if (type === "Mercancia_vendor") {
-            o = new Mercancia_vendor();
+        } else if (type === "Vendor") {
+            o = new Vendor();
+        } else if (type === "Vendor_mercancia") {
+            o = new Vendor_mercancia();
         } else if (type === "Documento") {
             o = new Documento();
         } else if (type === "Transporte_linea_tipo") {
@@ -69,8 +74,10 @@ function Factory() {
             oMng = new Transporte_tipoMng(o)
         } else if (o.type === "Transporte_linea") {
             oMng = new Transporte_lineaMng(o)
-        } else if (o.type === "Mercancia_vendor") {
-            oMng = new Mercancia_vendorMng(o)
+        } else if (o.type === "Vendor") {
+            oMng = new VendorMng(o)
+        } else if (o.type === "Vendor_mercancia") {
+            oMng = new Vendor_mercanciaMng(o)
         } else if (o.type === "Documento") {
             oMng = new DocumentoMng(o)
         } else if (o.type === "Transporte_linea_tipo") {
