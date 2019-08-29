@@ -3,7 +3,7 @@ var Common = require('../common/Common.js');
 
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 3002
 
 const bodyParser = require('body-parser');
 
@@ -15,7 +15,8 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
+// Catálogos
+// Get
 app.get('/aduana', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/cliente', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/documento', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
@@ -28,6 +29,7 @@ app.get('/vendor_mercancia/:id', (req, res) => {
   Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(data));
 })
 
+//Operacion
 //Post
 app.post('/asn', (req, res) => {
   res.send(req.body.fecha_arribo);
