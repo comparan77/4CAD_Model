@@ -1,4 +1,6 @@
 var Catalogo = require('./control/Catalogo.js')
+var Operacion = require('./control/Operacion.js')
+
 var Common = require('../common/Common.js');
 
 const express = require('express')
@@ -32,7 +34,9 @@ app.get('/vendor_mercancia/:id', (req, res) => {
 //Operacion
 //Post
 app.post('/asn', (req, res) => {
-  res.send(req.body.fecha_arribo);
+  Operacion.addAsn(req.body, (data) => {
+    res.send(data.Fecha_arribo);
+  });
 });
 
 function getStrReq(req) {

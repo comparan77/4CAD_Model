@@ -25,6 +25,12 @@ var Vendor_mercanciaMng = require('./Vendor_mercanciaMng.js');
 var Documento = require('./Documento.js');
 var DocumentoMng = require('./DocumentoMng.js');
 
+var Asn = require('./Asn.js');
+var AsnMng = require('./AsnMng.js');
+
+var Asn_documento = require('./Asn_documento.js');
+var Asn_documentoMng = require('./Asn_documentoMng.js');
+
 // var o = new Cliente();
 // o.Id = 1;
 // o.Nombre = 'Cliente Uno';
@@ -55,6 +61,10 @@ function Factory() {
             o = new Documento();
         } else if (type === "Transporte_linea_tipo") {
             o = new Transporte_linea_tipo();
+        } else if (type === "Asn") {
+            o = new Asn();
+        } else if (type === "Asn_documento") {
+            o = new Asn_documento();
         }
 
         o.type = type;
@@ -82,6 +92,10 @@ function Factory() {
             oMng = new DocumentoMng(o)
         } else if (o.type === "Transporte_linea_tipo") {
             oMng = new Transporte_linea_tipoMng(o)
+        } else if (o.type === "Asn") {
+            oMng = new AsnMng(o)
+        } else if (o.type === "Asn_documento") {
+            oMng = new Asn_documentoMng(o)
         }
 
         oTMng = new TableMng({
