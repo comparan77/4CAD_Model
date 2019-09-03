@@ -28,16 +28,6 @@ var AsnMng = require('./AsnMng.js');
 var Asn_documento = require('./Asn_documento.js');
 var Asn_documentoMng = require('./Asn_documentoMng.js');
 
-// var o = new Cliente();
-// o.Id = 1;
-// o.Nombre = 'Cliente Uno';
-// // o.Codigo = '23';
-// var oMgn = new ClienteMng(o);
-// var oMng = new TableMng({
-//     objMng: oMgn,
-//     pool: pool
-// });
-
 function Factory() {
     this.CreateObj = function(type) {
         var o;
@@ -93,11 +83,6 @@ function Factory() {
             oMng = new Asn_documentoMng(o)
         }
 
-        // oTMng = new TableMng({
-        //     objMng: oMng,
-        //     pool: pool
-        // })
-        // return oTMng;
         return oMng;
     }
 };
