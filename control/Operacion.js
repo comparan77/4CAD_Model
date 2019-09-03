@@ -10,7 +10,6 @@ Operacion.addAsn = function(obj, callback) {
 
     var factory = new Factory();
     var oAsn = factory.CreateObj('Asn');
-    var oAsn_doc = factory.CreateObj('Asn_documento');
 
     Object.keys(obj).forEach(item => {
         if(oAsn.hasOwnProperty(item))
@@ -19,30 +18,37 @@ Operacion.addAsn = function(obj, callback) {
     var oAsnMng = factory.CreateMng(oAsn);
 
     TableMng.Action(pool, oAsnMng, 'add', (data) => {
+        var lstDoc = [];
         obj.lstDoc.forEach(doc => {
+            var oAsn_doc = factory.CreateObj('Asn_documento');
             Object.keys(doc).forEach(item => {
                 if(oAsn_doc.hasOwnProperty(item))
                     oAsn_doc[item] = doc[item];
             });
             oAsn_doc.Id_asn = data[0].id;
-            var oAsn_docMng = factory.CreateMng(oAsn_doc);
-            
+            lstDoc.push(oAsn_doc);
+        });
+        Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+            callback();
         });
     });
 
-    // var oAsn_docMng = factory.CreateMng(oAsn_doc);
-    
+}
 
-    // var oAsnMng = factory.CreateMng(oAsn);
-    // var oAsn_docMng = factory.CreateMng(oAsn_doc);
-    // console.log(JSON.stringify(oAsn));
-    // console.log(JSON.stringify(oAsn_doc));
-    
-    callback(oAsn);
-
-    // oTMng.Action('lst', (data) => {
-    //   callback(JSON.stringify(data));
-    // })
+// Asn_documento
+// Add
+Operacion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {
+    var factory = new Factory();
+    var oAsn_doc = lstAsnDoc[indice];
+    if(oAsn_doc) {
+        var oAsn_docMng = factory.CreateMng(oAsn_doc);
+        indice++;
+        TableMng.Action(pool, oAsn_docMng, 'add', (data) => {
+            Operacion.addLstAsnDoc(lstAsnDoc, indice, callback);
+        });
+    }
+    else
+        callback();
 }
 
 module.exports = Operacion;
