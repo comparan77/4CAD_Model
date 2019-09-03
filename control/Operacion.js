@@ -16,7 +16,7 @@ Operacion.addAsn = function(obj, callback) {
             oAsn[item] = obj[item];
     });
 
-    //console.log(JSON.stringify(obj));
+    console.log(JSON.stringify(obj.lstDoc));
 
     // obj.lstDoc.forEach(doc => {
     //     Object.keys(oAsn_doc).forEach(item => {
@@ -29,6 +29,7 @@ Operacion.addAsn = function(obj, callback) {
     var oAsn_docMng = factory.CreateMng(oAsn_doc);
     // console.log(JSON.stringify(oAsn));
     // console.log(JSON.stringify(oAsn_doc));
+    console.log('aqui');
     callback(oAsn);
 
     // oTMng.Action('lst', (data) => {
