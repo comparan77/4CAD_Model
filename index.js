@@ -37,9 +37,7 @@ app.get('/vendor_mercancia/:id', (req, res) => {
 //Operacion
 //Post
 app.post('/asn', (req, res) => {
-  // console.log(req.body);
   Operacion.addAsn(req.body, (data) => {
-    console.log(data);
     res.send(data.Fecha_arribo);
   });
 });

@@ -1,6 +1,3 @@
-var pool = require('../_common/db.js');
-var TableMng = require('../_common/TableMng.js');
-
 var Cliente = require('./Cliente.js');
 var ClienteMng = require('./ClienteMng.js');
 
@@ -68,14 +65,12 @@ function Factory() {
         }
 
         o.type = type;
-
         return o;
     }
 
     this.CreateMng = function(o) {
         var oMng;
-        var oTMng;
-
+        // var oTMng;
         if(o.type === "Aduana") {
             oMng = new AduanaMng(o)
         } else if (o.type === "Cliente") {
@@ -98,11 +93,12 @@ function Factory() {
             oMng = new Asn_documentoMng(o)
         }
 
-        oTMng = new TableMng({
-            objMng: oMng,
-            pool: pool
-        })
-        return oTMng;
+        // oTMng = new TableMng({
+        //     objMng: oMng,
+        //     pool: pool
+        // })
+        // return oTMng;
+        return oMng;
     }
 };
 

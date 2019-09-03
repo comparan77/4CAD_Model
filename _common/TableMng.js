@@ -1,79 +1,42 @@
-function TableMng() {
+function TableMng() { };
 
-        //Global element references
-
-        //Define default options
-        var defaults = {
-            objMng: null,
-            pool: null
-        }
-
-        // Create options by extending defaults with the passed in arugments
-        if (arguments[0] && typeof arguments[0] === "object") {
-            this.options = extendDefaults(defaults, arguments[0]);
-        }
-
-        //private methods
-
-        //public methods
-        TableMng.prototype.ObjMng = function(objMng = null) {
-            if(objMng == null)
-                return this.options.objMng;
-            else 
-                this.options.objMng = objMng;
-        }
-
-        TableMng.prototype.Select = function(sql, values, callback, tran = null) {
-            var _ = this;
-            _.options.pool.query(sql, values, function(err, res, fields) {
-                if(err) throw err;
-                if(callback) callback(res);
-            });
-        }
-
-        TableMng.prototype.Action = function(action, callback, tran = null) {
-            var _ = this;
-            var opcion = 0;
-            switch (action) {
-                case 'lst':
-                    opcion = 0;
-                    break;
-                case 'get':
-                    opcion = 1;
-                    break;
-                case 'add':
-                    opcion = 2;
-                    break;
-                case 'udt':
-                    opcion = 3;
-                    break;
-                case 'dlt':
-                    opcion = 4;
-                    break;
-                default:
-                    break;
-            }
-
-            _.options.objMng.fillParameters(opcion);
-            var values = Object.values(_.options.objMng.Params);
-            var params = '(' + Object.values(_.options.objMng.Params).fill('?') + ')';
-            _.options.pool.query('call sp_' + _.options.objMng.TableName + params, values, function(err, res, fields) {
-                if(err) throw err;
-                if(callback) callback(res[0]);
-            });
-        }
-
-        // Utility method to extend defaults with user options
-        function extendDefaults(source, properties) {
-        var property;
-        for (property in properties) {
-            if (properties.hasOwnProperty(property)) {
-                source[property] = properties[property];
-            }
-        }
-        return source;
+TableMng.Select = function(pool, sql, values, callback, tran = null) {
+    pool.query(sql, values, function(err, res, fields) {
+        if(err) throw err;
+        if(callback) callback(res);
+    });
 }
 
-    };
+TableMng.Action = function(pool, objMng, action, callback, tran = null) {
+    var _ = this;
+    var opcion = 0;
+    switch (action) {
+        case 'lst':
+            opcion = 0;
+            break;
+        case 'get':
+            opcion = 1;
+            break;
+        case 'add':
+            opcion = 2;
+            break;
+        case 'udt':
+            opcion = 3;
+            break;
+        case 'dlt':
+            opcion = 4;
+            break;
+        default:
+            break;
+    }
+
+    objMng.fillParameters(opcion);
+    var values = Object.values(objMng.Params);
+    var params = '(' + Object.values(objMng.Params).fill('?') + ')';
+    pool.query('call sp_' + objMng.TableName + params, values, function(err, res, fields) {
+        if(err) throw err;
+        if(callback) callback(res[0]);
+    });
+}
 
 module.exports = TableMng;
