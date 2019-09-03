@@ -7,7 +7,7 @@ const express = require('express')
 const app = express()
 const port = 3002
 
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -15,8 +15,11 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false }))
+// app.use(bodyParser.json());
+app.use(express.json());
+
 // Catálogos
 // Get
 app.get('/aduana', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
@@ -34,9 +37,12 @@ app.get('/vendor_mercancia/:id', (req, res) => {
 //Operacion
 //Post
 app.post('/asn', (req, res) => {
-  Operacion.addAsn(req.body, (data) => {
-    res.send(data.Fecha_arribo);
-  });
+  console.log(req.body);
+  // Operacion.addAsn(req.body, (data) => {
+    
+  //   res.send(data.Fecha_arribo);
+  // });
+  res.send(req.body.Fecha_arribo)
 });
 
 function getStrReq(req) {

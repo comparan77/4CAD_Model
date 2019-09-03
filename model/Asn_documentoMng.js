@@ -15,9 +15,9 @@ Asn_documentoMng.prototype = Object.create(BaseMng.prototype);
 Asn_documentoMng.prototype.constructor = Asn_documentoMng;
 Asn_documentoMng.prototype.fillParameters = function(option) {
 	this.Params.Option = option;
-	this.Params.Id = this.obj.Id;
-	this.Params.Id_asn = this.obj.Id_asn;
-	this.Params.Id_documento = this.obj.Id_documento;
-	this.Params.Referencia = this.obj.Referencia;
+	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
+	this.Params.Id_asn = this.obj.Id_asn == null ? this.Params.Id_asn : this.obj.Id_asn;
+	this.Params.Id_documento = this.obj.Id_documento == null ? this.Params.Id_documento : this.obj.Id_documento;
+	this.Params.Referencia = this.obj.Referencia == null ? this.Params.Referencia : this.obj.Referencia;
 }
 module.exports = Asn_documentoMng;

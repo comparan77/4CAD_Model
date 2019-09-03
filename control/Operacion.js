@@ -10,14 +10,26 @@ Operacion.addAsn = function(obj, callback) {
     var oAsn = factory.CreateObj('Asn');
     var oAsn_doc = factory.CreateObj('Asn_documento');
 
-    Object.keys(obj).forEach(item => {
-        console.log(item);
-    })
+    Object.keys(oAsn).forEach(item => {
+        //console.log(item);
+        if(oAsn.hasOwnProperty(item))
+            oAsn[item] = obj[item];
+    });
+
+    //console.log(JSON.stringify(obj));
+
+    // obj.lstDoc.forEach(doc => {
+    //     Object.keys(oAsn_doc).forEach(item => {
+    //         if(oAsn_doc.hasOwnProperty(item))
+    //             oAsn_doc[item] = doc[item];
+    //     });
+    // });
 
     var oAsnMng = factory.CreateMng(oAsn);
     var oAsn_docMng = factory.CreateMng(oAsn_doc);
-
-    callback(obj);
+    // console.log(JSON.stringify(oAsn));
+    // console.log(JSON.stringify(oAsn_doc));
+    callback(oAsn);
 
     // oTMng.Action('lst', (data) => {
     //   callback(JSON.stringify(data));
