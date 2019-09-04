@@ -13,7 +13,7 @@ DocumentoMng.prototype = Object.create(BaseMng.prototype);
 DocumentoMng.prototype.constructor = DocumentoMng;
 DocumentoMng.prototype.fillParameters = function(option) {
 	this.Params.Option = option;
-	this.Params.Id = this.obj.Id;
-	this.Params.Nombre = this.obj.Nombre;
+	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
+	this.Params.Nombre = this.obj.Nombre == null ? this.Params.Nombre : this.obj.Nombre;
 }
 module.exports = DocumentoMng;

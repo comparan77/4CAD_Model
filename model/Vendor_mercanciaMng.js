@@ -14,8 +14,8 @@ Vendor_mercanciaMng.prototype = Object.create(BaseMng.prototype);
 Vendor_mercanciaMng.prototype.constructor = Vendor_mercanciaMng;
 Vendor_mercanciaMng.prototype.fillParameters = function(option) {
 	this.Params.Option = option;
-	this.Params.Id = this.obj.Id;
-	this.Params.Id_vendor = this.obj.Id_vendor;
-	this.Params.Nombre = this.obj.Nombre;
+	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
+	this.Params.Id_vendor = this.obj.Id_vendor == null ? this.Params.Id_vendor : this.obj.Id_vendor;
+	this.Params.Nombre = this.obj.Nombre == null ? this.Params.Nombre : this.obj.Nombre;
 }
 module.exports = Vendor_mercanciaMng;
