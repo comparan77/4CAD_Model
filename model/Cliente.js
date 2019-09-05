@@ -1,6 +1,6 @@
 function Cliente() { 
-	this.Id;
-	this.Nombre;
-	this.IsActive;
+	this.Id = null;
+	this.Nombre = null;
+	this.IsActive = null;
 }; 
 module.exports = Cliente;

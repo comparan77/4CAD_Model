@@ -1,11 +1,11 @@
 function Transporte_tipo() { 
-	this.Id;
-	this.Nombre;
-	this.Peso_max;
-	this.Placa;
-	this.Caja;
-	this.Cont_1;
-	this.Cont_2;
-	this.IsActive;
+	this.Id = null;
+	this.Nombre = null;
+	this.Peso_max = null;
+	this.Placa = null;
+	this.Caja = null;
+	this.Cont_1 = null;
+	this.Cont_2 = null;
+	this.IsActive = null;
 }; 
 module.exports = Transporte_tipo;

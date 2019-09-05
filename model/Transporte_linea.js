@@ -1,7 +1,7 @@
 function Transporte_linea() { 
-	this.Id;
-	this.Nombre;
-	this.Rfc;
-	this.IsActive;
+	this.Id = null;
+	this.Nombre = null;
+	this.Rfc = null;
+	this.IsActive = null;
 }; 
 module.exports = Transporte_linea;

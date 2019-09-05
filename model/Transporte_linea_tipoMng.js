@@ -14,8 +14,8 @@ Transporte_linea_tipoMng.prototype = Object.create(BaseMng.prototype);
 Transporte_linea_tipoMng.prototype.constructor = Transporte_linea_tipoMng;
 Transporte_linea_tipoMng.prototype.fillParameters = function(option) {
 	this.Params.Option = option;
-	this.Params.Id = this.obj.Id;
-	this.Params.Id_transporte_linea = this.obj.Id_transporte_linea;
-	this.Params.Id_transporte_tipo = this.obj.Id_transporte_tipo;
+	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
+	this.Params.Id_transporte_linea = this.obj.Id_transporte_linea == null ? this.Params.Id_transporte_linea : this.obj.Id_transporte_linea;
+	this.Params.Id_transporte_tipo = this.obj.Id_transporte_tipo == null ? this.Params.Id_transporte_tipo : this.obj.Id_transporte_tipo;
 }
 module.exports = Transporte_linea_tipoMng;

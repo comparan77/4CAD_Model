@@ -1,7 +1,7 @@
 function Aduana() { 
-	this.Id;
-	this.Codigo;
-	this.Nombre;
-	this.IsActive;
+	this.Id = null;
+	this.Codigo = null;
+	this.Nombre = null;
+	this.IsActive = null;
 }; 
 module.exports = Aduana;
