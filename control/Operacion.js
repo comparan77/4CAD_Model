@@ -4,6 +4,14 @@ var Factory = require('../model/Factory.js');
 
 function Operacion () {};
 
+// Consultas a la base de datos genéricas
+// Fecha
+Operacion.getAnioActFromDB = function(callback) {
+    TableMng.Select(pool, 'select year(now()) YearDb from dual', '', callback, () => {
+        callback(data);
+    })
+}
+
 // Folio
 // Get By tipo
 Operacion.folioGetByTipo = function(tipo, callback) {
@@ -11,10 +19,18 @@ Operacion.folioGetByTipo = function(tipo, callback) {
     var factory = new Factory();
     var oFolio = factory.CreateObj('Folio');
     var oFolioMng = factory.CreateMng(oFolio);
+    var _data;
 
-    TableMng.SelectBy(pool, oFolioMng, `tipo = ?`, tipo, (data => {
-        callback(JSON.stringify(data));
-    }));
+    TableMng.SelectBy(pool, oFolioMng, `tipo = ?`, tipo, (data) => {
+        _data = data;
+        Operacion.getAnioActFromDB((data) => {
+            if(data[0].YearDb != _data[0].Anio_actual)
+                console.log('Actualizar año')
+            oFolio.Actual = 'ASN-00001-19';
+            
+            callback(_data);
+        });
+    });
     
 }
 
