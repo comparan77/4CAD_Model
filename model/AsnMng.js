@@ -6,6 +6,7 @@ function AsnMng (o, lst = null) {
 	this.Params = {
 		Option: 0,
 		Id: 0,
+		Folio: '',
 		Id_cliente: 0,
 		Fecha_arribo: '',
 		Hora_arribo: '',
@@ -27,6 +28,7 @@ AsnMng.prototype.constructor = AsnMng;
 AsnMng.prototype.fillParameters = function(option) {
 	this.Params.Option = option;
 	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
+	this.Params.Folio = this.obj.Folio == null ? this.Params.Folio : this.obj.Folio;
 	this.Params.Id_cliente = this.obj.Id_cliente == null ? this.Params.Id_cliente : this.obj.Id_cliente;
 	this.Params.Fecha_arribo = this.obj.Fecha_arribo == null ? this.Params.Fecha_arribo : this.obj.Fecha_arribo;
 	this.Params.Hora_arribo = this.obj.Hora_arribo == null ? this.Params.Hora_arribo : this.obj.Hora_arribo;
