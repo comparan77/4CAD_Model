@@ -20,15 +20,35 @@ Operacion.folioGetByTipo = function(tipo, callback) {
     var oFolio = factory.CreateObj('Folio');
     var oFolioMng = factory.CreateMng(oFolio);
     var _data;
+    var strFolio;
 
     TableMng.SelectBy(pool, oFolioMng, `tipo = ?`, tipo, (data) => {
         _data = data;
         Operacion.getAnioActFromDB((data) => {
-            if(data[0].YearDb != _data[0].Anio_actual)
-                console.log('Actualizar año')
-            oFolio.Actual = 'ASN-00001-19';
-            
-            callback(_data);
+            if(data[0].YearDb != _data[0].Anio_actual) {
+                oFolio.Id = _data[0].Id;
+                oFolio.Anio_actual = data[0].YearDb;
+                oFolio.Actual = 2;
+                oFolio.Tipo = _data[0].Tipo;
+                oFolio.Digitos = _data[0].Digitos;
+                console.log(oFolio);
+                TableMng.Action(pool, oFolioMng, 'udt', () => {
+                    strFolio =  '1'.padStart(_data[0].Digitos, "0");
+                    strFolio = _data[0].Tipo + '-' + strFolio + '-' + data[0].YearDb.toString().substr(2, 2);
+                    callback(strFolio);
+                })
+            } else {
+                strFolio =  _data[0].Actual.toString().padStart(_data[0].Digitos, "0");
+                strFolio = _data[0].Tipo + '-' + strFolio + '-' + _data[0].Anio_actual.toString().substr(2, 2);
+                oFolio.Actual = _data[0].Actual + 1;
+                oFolio.Id = _data[0].Id;
+                oFolio.Tipo = _data[0].Tipo;
+                oFolio.Digitos = _data[0].Digitos;
+                oFolio.Anio_actual = _data[0].Anio_actual;
+                TableMng.Action(pool, oFolioMng, 'udt', () => {
+                    callback(strFolio);
+                })     
+            }
         });
     });
     
@@ -47,20 +67,25 @@ Operacion.addAsn = function(obj, callback) {
     });
     var oAsnMng = factory.CreateMng(oAsn);
 
-    TableMng.Action(pool, oAsnMng, 'add', (data) => {
-        var lstDoc = [];
-        obj.lstDoc.forEach(doc => {
-            var oAsn_doc = factory.CreateObj('Asn_documento');
-            Object.keys(doc).forEach(item => {
-                if(oAsn_doc.hasOwnProperty(item))
-                    oAsn_doc[item] = doc[item];
+    Operacion.folioGetByTipo('ASN', (folio) => {
+        
+        oAsn.Folio = folio;
+        TableMng.Action(pool, oAsnMng, 'add', (data) => {
+            var lstDoc = [];
+            obj.lstDoc.forEach(doc => {
+                var oAsn_doc = factory.CreateObj('Asn_documento');
+                Object.keys(doc).forEach(item => {
+                    if(oAsn_doc.hasOwnProperty(item))
+                        oAsn_doc[item] = doc[item];
+                });
+                oAsn_doc.Id_asn = data[0].id;
+                lstDoc.push(oAsn_doc);
             });
-            oAsn_doc.Id_asn = data[0].id;
-            lstDoc.push(oAsn_doc);
+            Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+                callback();
+            });
         });
-        Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
-            callback();
-        });
+
     });
 
 }

@@ -42,7 +42,15 @@ TableMng.Action = function(pool, objMng, action, callback, tran = null) {
     var params = '(' + Object.values(objMng.Params).fill('?') + ')';
     pool.query('call sp_' + objMng.TableName + params, values, function(err, res, fields) {
         if(err) throw err;
-        if(callback) callback(res[0]);
+        var data;
+        switch (action) {
+            case 'get':
+                data = res[0];
+                break;
+            default:
+                data = res[0];
+        }
+        if(callback) callback(data);
     });
 }
 
