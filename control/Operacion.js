@@ -4,6 +4,20 @@ var Factory = require('../model/Factory.js');
 
 function Operacion () {};
 
+// Folio
+// Get By tipo
+Operacion.folioGetByTipo = function(tipo, callback) {
+
+    var factory = new Factory();
+    var oFolio = factory.CreateObj('Folio');
+    var oFolioMng = factory.CreateMng(oFolio);
+
+    TableMng.SelectBy(pool, oFolioMng, `tipo = ?`, tipo, (data => {
+        callback(JSON.stringify(data));
+    }));
+    
+}
+
 // Asn 
 // Add
 Operacion.addAsn = function(obj, callback) {

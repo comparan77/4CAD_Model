@@ -33,6 +33,9 @@ app.get('/transporte_linea_tipo/:id', (req, res) => {
 app.get('/vendor_mercancia/:id', (req, res) => {
   Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(data));
 })
+app.get('/folio/:tipo', (req, res) => {
+  Operacion.folioGetByTipo(req.params.tipo, (data) => res.send(data));
+})
 
 //Operacion
 //Post

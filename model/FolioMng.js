@@ -11,6 +11,9 @@ function FolioMng (o, lst = null) {
 		Actual: 0,
 		Digitos: 0,
 	}
+
+	this.QrySelBy = 'select Id, Tipo, Anio_actual, Actual, Digitos FROM folio WHERE ';
+
 };
 FolioMng.prototype = Object.create(BaseMng.prototype);
 FolioMng.prototype.constructor = FolioMng;

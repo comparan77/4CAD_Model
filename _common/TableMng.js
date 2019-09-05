@@ -7,6 +7,13 @@ TableMng.Select = function(pool, sql, values, callback, tran = null) {
     });
 }
 
+TableMng.SelectBy = function(pool, objMng, condition, values, callback, tran = null) {
+    pool.query(objMng.QrySelBy + condition, values, function(err, res, fields) {
+        if(err) throw err;
+        if(callback) callback(res);
+    });
+}
+
 TableMng.Action = function(pool, objMng, action, callback, tran = null) {
     var _ = this;
     var opcion = 0;

@@ -1,3 +1,6 @@
+var Folio = require('./Folio.js');
+var FolioMng = require('./FolioMng.js');
+
 var Cliente = require('./Cliente.js');
 var ClienteMng = require('./ClienteMng.js');
 
@@ -32,7 +35,9 @@ function Factory() {
     this.CreateObj = function(type) {
         var o;
         
-        if (type === "Aduana") {
+        if (type === "Folio") {
+            o = new Folio();
+        } else if (type === "Aduana") {
             o = new Aduana();
         } else if (type === "Cliente") {
             o = new Cliente();
@@ -61,7 +66,9 @@ function Factory() {
     this.CreateMng = function(o) {
         var oMng;
         // var oTMng;
-        if(o.type === "Aduana") {
+        if(o.type === "Folio") {
+            oMng = new FolioMng(o)
+        } else if (o.type === "Aduana") {
             oMng = new AduanaMng(o)
         } else if (o.type === "Cliente") {
             oMng = new ClienteMng(o)
