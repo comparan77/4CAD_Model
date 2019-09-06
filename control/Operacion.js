@@ -14,7 +14,7 @@ Operacion.getAnioActFromDB = function(callback) {
 
 // Folio
 // Get By tipo
-Operacion.folioGetByTipo = function(tipo, callback) {
+Operacion.getFolioByTipo = function(tipo, callback) {
 
     var factory = new Factory();
     var oFolio = factory.CreateObj('Folio');
@@ -59,7 +59,7 @@ Operacion.addAsn = function(obj, callback) {
     });
     var oAsnMng = factory.CreateMng(oAsn);
 
-    Operacion.folioGetByTipo('ASN', (folio) => {
+    Operacion.getFolioByTipo('ASN', (folio) => {
         
         oAsn.Folio = folio;
         TableMng.Action(pool, oAsnMng, 'add', (data) => {
@@ -79,7 +79,19 @@ Operacion.addAsn = function(obj, callback) {
         });
 
     });
-
+}
+// Schedule
+Operacion.getAsnSchedule = function(callback) {
+    TableMng.Select(pool, `select a.id, a.folio title, c.nombre cliente, 
+                                concat(a.fecha_arribo, "T", a.hora_arribo) start, 
+                                tt.nombre transporte
+                            from asn a join cliente c 
+                                on c.id = a.id_cliente 
+                            join transporte_tipo tt 
+                                on tt.id = a.id_transporte_tipo;`, 
+                                null, (data => {
+        callback(JSON.stringify(data));
+    }));    
 }
 
 // Asn_documento

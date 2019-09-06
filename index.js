@@ -37,13 +37,19 @@ app.get('/folio/:tipo', (req, res) => {
   Operacion.folioGetByTipo(req.params.tipo, (data) => res.send(data));
 })
 
-//Operacion
-//Post
+// Operacion
+// Post
 app.post('/asn', (req, res) => {
   Operacion.addAsn(req.body, (data) => {
     res.send('Ready');
   });
 });
+// Schedules
+app.get('/asn_schedule', (req, res) => {
+  Operacion.getAsnSchedule((data) => {
+    res.send(data);
+  })
+})
 
 function getStrReq(req) {
 
