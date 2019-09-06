@@ -1,5 +1,12 @@
 function TableMng() { };
 
+TableMng.fillObj = function(objMng, row) {
+    Object.keys(row).forEach(item => {
+        if(objMng.obj.hasOwnProperty(item))
+            objMng.obj[item] = row[item];
+    });
+}
+
 TableMng.Select = function(pool, sql, values, callback, tran = null) {
     pool.query(sql, values, function(err, res, fields) {
         if(err) throw err;
@@ -10,6 +17,15 @@ TableMng.Select = function(pool, sql, values, callback, tran = null) {
 TableMng.SelectBy = function(pool, objMng, condition, values, callback, tran = null) {
     pool.query(objMng.QrySelBy + condition, values, function(err, res, fields) {
         if(err) throw err;
+        switch (res.length) {
+            case 0:
+                break;
+            case 1:
+                TableMng.fillObj(objMng, res[0]);
+                break;
+            default:
+                break;
+        }
         if(callback) callback(res);
     });
 }
@@ -45,6 +61,7 @@ TableMng.Action = function(pool, objMng, action, callback, tran = null) {
         var data;
         switch (action) {
             case 'get':
+                TableMng.fillObj(objMng, res[0]);
                 data = res[0];
                 break;
             default:
