@@ -94,6 +94,20 @@ Operacion.getAsnSchedule = function(callback) {
     }));    
 }
 
+Operacion.getAsnScheduleByCliente = function(cliente, callback) {
+    TableMng.Select(pool, `select a.id, a.folio title, c.nombre cliente, 
+                                concat(a.fecha_arribo, "T", a.hora_arribo) start, 
+                                tt.nombre transporte
+                            from asn a join cliente c 
+                                on c.id = a.id_cliente 
+                                and c.id = ?
+                            join transporte_tipo tt 
+                                on tt.id = a.id_transporte_tipo;`, 
+                                cliente, (data => {
+        callback(JSON.stringify(data));
+    }));    
+}
+
 // Asn_documento
 // Add
 Operacion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {

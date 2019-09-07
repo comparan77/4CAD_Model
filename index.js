@@ -46,9 +46,11 @@ app.post('/asn', (req, res) => {
 });
 // Schedules
 app.get('/asn_schedule', (req, res) => {
-  Operacion.getAsnSchedule((data) => {
-    res.send(data);
-  })
+  Operacion.getAsnSchedule((data) => res.send(data))
+})
+
+app.get('/asn_schedule/:cliente', (req, res) => {
+  Operacion.getAsnScheduleByCliente(req.params.cliente, (data) => res.send(data))
 })
 
 function getStrReq(req) {
