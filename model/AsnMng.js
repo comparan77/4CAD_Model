@@ -8,6 +8,7 @@ function AsnMng (o, lst = null) {
 		Id: 0,
 		Folio: '',
 		Id_cliente: 0,
+		Id_almacen: 0,
 		Fecha_arribo: '',
 		Hora_arribo: '',
 		Id_mercancia_vendor: 0,
@@ -22,6 +23,9 @@ function AsnMng (o, lst = null) {
 		Cont_1: '',
 		Cont_2: '',
 	}
+
+	this.QrySelBy = 'select Id, Folio, Id_cliente, Id_almacen, Fecha_arribo, Hora_arribo, Id_mercancia_vendor, Bulto_declarado, Pieza_declarada, Operador, Sello, Id_transporte_linea, Id_transporte_tipo, Placa, Caja, Cont_1, Cont_2 FROM asn WHERE ';
+
 };
 AsnMng.prototype = Object.create(BaseMng.prototype);
 AsnMng.prototype.constructor = AsnMng;
@@ -30,6 +34,7 @@ AsnMng.prototype.fillParameters = function(option) {
 	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
 	this.Params.Folio = this.obj.Folio == null ? this.Params.Folio : this.obj.Folio;
 	this.Params.Id_cliente = this.obj.Id_cliente == null ? this.Params.Id_cliente : this.obj.Id_cliente;
+	this.Params.Id_almacen = this.obj.Id_almacen == null ? this.Params.Id_almacen : this.obj.Id_almacen;
 	this.Params.Fecha_arribo = this.obj.Fecha_arribo == null ? this.Params.Fecha_arribo : this.obj.Fecha_arribo;
 	this.Params.Hora_arribo = this.obj.Hora_arribo == null ? this.Params.Hora_arribo : this.obj.Hora_arribo;
 	this.Params.Id_mercancia_vendor = this.obj.Id_mercancia_vendor == null ? this.Params.Id_mercancia_vendor : this.obj.Id_mercancia_vendor;

@@ -22,6 +22,7 @@ app.use(express.json());
 
 // Catálogos
 // Get
+app.get('/almacen', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/aduana', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/cliente', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));
 app.get('/documento', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(data)));

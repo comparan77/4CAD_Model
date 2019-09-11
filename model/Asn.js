@@ -2,6 +2,7 @@ function Asn() {
 	this.Id = null;
 	this.Folio = null;
 	this.Id_cliente = null;
+	this.Id_almacen = null;
 	this.Fecha_arribo = null;
 	this.Hora_arribo = null;
 	this.Id_mercancia_vendor = null;

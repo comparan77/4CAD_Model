@@ -1,6 +1,9 @@
 var Folio = require('./Folio.js');
 var FolioMng = require('./FolioMng.js');
 
+var Almacen = require('./Almacen.js');
+var AlmacenMng = require('./AlmacenMng.js');
+
 var Cliente = require('./Cliente.js');
 var ClienteMng = require('./ClienteMng.js');
 
@@ -37,6 +40,8 @@ function Factory() {
         
         if (type === "Folio") {
             o = new Folio();
+        } else if (type === "Almacen") {
+            o = new Almacen();
         } else if (type === "Aduana") {
             o = new Aduana();
         } else if (type === "Cliente") {
@@ -68,6 +73,8 @@ function Factory() {
         // var oTMng;
         if(o.type === "Folio") {
             oMng = new FolioMng(o)
+        } else if (o.type === "Almacen") {
+            oMng = new AlmacenMng(o)
         } else if (o.type === "Aduana") {
             oMng = new AduanaMng(o)
         } else if (o.type === "Cliente") {
