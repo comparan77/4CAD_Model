@@ -80,6 +80,7 @@ Operacion.addAsn = function(obj, callback) {
 
     });
 }
+
 // Schedule
 Operacion.getAsnSchedule = function(callback) {
     TableMng.Select(pool, `select a.id, a.folio title, c.nombre cliente, 
@@ -106,6 +107,17 @@ Operacion.getAsnScheduleByCliente = function(cliente, callback) {
                                 cliente, (data => {
         callback(JSON.stringify(data));
     }));    
+}
+
+// Cortinas con recepcion
+Operacion.getAsnRecepcionCortina = function(callback) {
+    TableMng.Select(pool, `select a.nombre almacen, c.id_almacen, count(c.id) cortinas, 
+    count(ar.id) operacion from cortina c join almacen a on a.id = c.id_almacen  
+    left join asn_recepcion ar 
+    on ar.id_cortina = c.id and ar.en_operacion = 1
+    group by c.id_almacen;`, null, (data => {
+        callback(JSON.stringify(data));
+    }))
 }
 
 // Asn_documento

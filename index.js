@@ -34,9 +34,6 @@ app.get('/transporte_linea_tipo/:id', (req, res) => {
 app.get('/vendor_mercancia/:id', (req, res) => {
   Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(data));
 })
-app.get('/folio/:tipo', (req, res) => {
-  Operacion.folioGetByTipo(req.params.tipo, (data) => res.send(data));
-})
 
 // Operacion
 // Post
@@ -49,13 +46,16 @@ app.post('/asn', (req, res) => {
 app.get('/asn_schedule', (req, res) => {
   Operacion.getAsnSchedule((data) => res.send(data))
 })
-
 app.get('/asn_schedule/:cliente', (req, res) => {
   Operacion.getAsnScheduleByCliente(req.params.cliente, (data) => res.send(data))
 })
+// Recepcion en cortinas
+app.get('/asn_rec_cortina', (req, res) => {
+  Operacion.getAsnRecepcionCortina((data) => res.send(data))
+})
 
+// Para catalogos
 function getStrReq(req) {
-
     var strReq = req.originalUrl;
     strReq = Common.Capitalize(strReq.replace('/',''));
     return strReq;
