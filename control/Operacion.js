@@ -135,7 +135,8 @@ Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
                     asn_r.id_cortina = c.id
                     and asn_r.en_operacion = 1
                 left join asn asn on
-                    asn.id = asn_r.id_asn;`, 
+                    asn.id = asn_r.id_asn
+                order by c.id;`, 
                                 almacen, (data => {
         callback(JSON.stringify(data));
     }));
