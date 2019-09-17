@@ -53,6 +53,9 @@ app.get('/asn_schedule/:cliente', (req, res) => {
 app.get('/asn_rec_cortina', (req, res) => {
   Operacion.getAsnRecepcionCortina((data) => res.send(data))
 })
+app.get('/asn_rec_cortina/:almacen', (req, res) => {
+  Operacion.getAsnRecepcionCortinaByAlmacen(req.params.almacen, (data) => res.send(data))
+})
 
 // Para catalogos
 function getStrReq(req) {

@@ -120,6 +120,27 @@ Operacion.getAsnRecepcionCortina = function(callback) {
     }))
 }
 
+Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
+    TableMng.Select(pool, `select
+                    a.nombre almacen
+                    ,c.nombre cortina
+                    ,c.id id_cortina
+                    , COALESCE(asn_r.id, 0) asn_r_id 
+                    , COALESCE(asn.folio, '') a_folio
+                from cortina c
+                join almacen a on 
+                    c.id_almacen = a.id
+                    and a.id = ?
+                left join asn_recepcion asn_r on
+                    asn_r.id_cortina = c.id
+                    and asn_r.en_operacion = 1
+                left join asn asn on
+                    asn.id = asn_r.id_asn;`, 
+                                almacen, (data => {
+        callback(JSON.stringify(data));
+    }));
+}
+
 // Asn_documento
 // Add
 Operacion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {
