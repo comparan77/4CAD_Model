@@ -142,6 +142,43 @@ Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
     }));
 }
 
+Operacion.getAsnRecepcionCortinaById= function(id, callback) {
+    TableMng.Select(pool, `select
+                a.folio,
+                c.nombre cliente,
+                v.nombre vendor,
+                vm.nombre mercancia,
+                a.bulto_declarado,
+                a.pieza_declarada,
+                a.operador,
+                a.sello,
+                tl.nombre linea,
+                tt.nombre tipo,
+                a.placa,
+                a.caja,
+                a.cont_1,
+                a.cont_2,
+                asn_r.fecha_recepcion,
+                asn_r.hora_recepcion
+            from asn_recepcion asn_r
+            join asn a on 
+                a.id = asn_r.id_asn
+            join cliente c on
+                c.id = a.id_cliente
+            join vendor_mercancia vm on
+                vm.id = a.id_mercancia_vendor
+            join vendor v on	
+                v.id = vm.id_vendor
+            join transporte_linea tl on
+                tl.id = a.id_transporte_linea
+            join transporte_tipo tt on
+                tt.id = a.id_transporte_tipo
+            where asn_r.id = ?;`, 
+                                id, (data => {
+        callback(JSON.stringify(data));
+    }));
+}
+
 // Asn_documento
 // Add
 Operacion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {
