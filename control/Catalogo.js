@@ -11,7 +11,7 @@ Catalogo.lstCatalogo = function(strObj, callback) {
     var oMng = factory.CreateMng(o);
 
     TableMng.Action(pool, oMng, 'lst', (data) => {
-      callback(JSON.stringify(data));
+      callback(data);
     })
 }
 
@@ -26,7 +26,7 @@ Catalogo.GetTransporteTipoByLinea = function(id, callback) {
                     join transporte_tipo tt on
                     tlt.id_transporte_tipo = tt.id
                     where tl.id = ?`, id, (data => {
-        callback(JSON.stringify(data));
+        callback(data);
     }));
 }
 
@@ -39,7 +39,7 @@ Catalogo.GetMercanciaByVendor = function(id, callback) {
                     join vendor v on
                     vm.id_vendor = v.id
                     where v.id = ?`, id, (data => {
-        callback(JSON.stringify(data));
+        callback(data);
     }));
 }
 

@@ -10,6 +10,9 @@ function Asn_documentoMng (o, lst = null) {
 		Id_documento: 0,
 		Referencia: '',
 	}
+
+	this.QrySelBy = 'select Id, Id_asn, Id_documento, Referencia FROM asn_documento WHERE ';
+
 };
 Asn_documentoMng.prototype = Object.create(BaseMng.prototype);
 Asn_documentoMng.prototype.constructor = Asn_documentoMng;

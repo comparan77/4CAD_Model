@@ -1,4 +1,5 @@
 var pool = require('../_common/db.js');
+var Catalogo = require('./Catalogo.js')
 var TableMng = require('../_common/TableMng.js');
 var Factory = require('../model/Factory.js');
 
@@ -7,7 +8,7 @@ function Operacion () {};
 // Consultas a la base de datos genéricas
 // Fecha
 Operacion.getAnioActFromDB = function(callback) {
-    TableMng.Select(pool, 'select year(now()) YearDb from dual', '', callback, () => {
+    TableMng.Select(pool, 'select year(now()) YearDb from dual', '', (data) => {
         callback(data);
     })
 }
@@ -19,11 +20,9 @@ Operacion.getFolioByTipo = function(tipo, callback) {
     var factory = new Factory();
     var oFolio = factory.CreateObj('Folio');
     var oFolioMng = factory.CreateMng(oFolio);
-    var _data;
     var strFolio;
 
-    TableMng.SelectBy(pool, oFolioMng, `tipo = ?`, tipo, (data) => {
-        _data = data;
+    TableMng.SelectBy(pool, oFolioMng, `tipo = ?`, tipo, () => {
         Operacion.getAnioActFromDB((data) => {
             if(data[0].YearDb != oFolio.Anio_actual) {
                 oFolio.Anio_actual = data[0].YearDb;
@@ -91,7 +90,7 @@ Operacion.getAsnSchedule = function(callback) {
                             join transporte_tipo tt 
                                 on tt.id = a.id_transporte_tipo;`, 
                                 null, (data => {
-        callback(JSON.stringify(data));
+        callback(data);
     }));    
 }
 
@@ -105,7 +104,7 @@ Operacion.getAsnScheduleByCliente = function(cliente, callback) {
                             join transporte_tipo tt 
                                 on tt.id = a.id_transporte_tipo;`, 
                                 cliente, (data => {
-        callback(JSON.stringify(data));
+        callback(data);
     }));    
 }
 
@@ -116,7 +115,7 @@ Operacion.getAsnRecepcionCortina = function(callback) {
     left join asn_recepcion ar 
     on ar.id_cortina = c.id and ar.en_operacion = 1
     group by c.id_almacen;`, null, (data => {
-        callback(JSON.stringify(data));
+        callback(data);
     }))
 }
 
@@ -138,12 +137,14 @@ Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
                     asn.id = asn_r.id_asn
                 order by c.id;`, 
                                 almacen, (data => {
-        callback(JSON.stringify(data));
+        callback(data);
     }));
 }
 
 Operacion.getAsnRecepcionCortinaById= function(id, callback) {
+
     TableMng.Select(pool, `select
+                a.id id_asn,
                 a.folio,
                 c.nombre cliente,
                 v.nombre vendor,
@@ -175,7 +176,10 @@ Operacion.getAsnRecepcionCortinaById= function(id, callback) {
                 tt.id = a.id_transporte_tipo
             where asn_r.id = ?;`, 
                                 id, (data => {
-        callback(JSON.stringify(data));
+        Operacion.SltByAsnDoc(data[0].id_asn, (res) => {
+            data[0].lstDoc = res;
+            callback(data);
+        });
     }));
 }
 
@@ -193,6 +197,24 @@ Operacion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {
     }
     else
         callback();
+}
+// Select by Asn
+Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
+    var factory = new Factory();
+    var oAsn_doc = factory.CreateObj('Asn_documento');
+    var oAsn_docMng = factory.CreateMng(oAsn_doc);
+    TableMng.SelectBy(pool, oAsn_docMng, `id_asn = ?`, id_asn, (res) => {
+        Catalogo.lstCatalogo('Documento', (data) => {
+            for(i in res) {
+                var doc = data.find((obj) => {
+                    return obj.Id == res[i].Id_documento;
+                });
+                res[i].Documento = doc.Nombre;
+            }
+            if(callback) callback(res);
+        });
+        
+    });
 }
 
 module.exports = Operacion;
