@@ -4,6 +4,21 @@ var FolioMng = require('./FolioMng.js');
 var Almacen = require('./Almacen.js');
 var AlmacenMng = require('./AlmacenMng.js');
 
+var Almacen_zona = require('./Almacen_zona.js');
+var Almacen_zonaMng = require('./Almacen_zonaMng.js');
+
+var Almacen_layout = require('./Almacen_layout.js');
+var Almacen_layoutMng = require('./Almacen_layoutMng.js');
+
+var Almacen_plantilla = require('./Almacen_plantilla.js');
+var Almacen_plantillaMng = require('./Almacen_plantillaMng.js');
+
+var Almacen_tipo_codificacion = require('./Almacen_tipo_codificacion.js');
+var Almacen_tipo_codificacionMng = require('./Almacen_tipo_codificacionMng.js');
+
+var Almacen_codificacion = require('./Almacen_codificacion.js');
+var Almacen_codificacionMng = require('./Almacen_codificacionMng.js');
+
 var Cliente = require('./Cliente.js');
 var ClienteMng = require('./ClienteMng.js');
 
@@ -42,6 +57,16 @@ function Factory() {
             o = new Folio();
         } else if (type === "Almacen") {
             o = new Almacen();
+        } else if (type === "Almacen_zona") {
+            o = new Almacen_zona();
+        } else if (type === "Almacen_layout") {
+            o = new Almacen_layout();
+        } else if (type === "Almacen_plantilla") {
+            o = new Almacen_plantilla();
+        } else if (type === "Almacen_tipo_codificacion") {
+            o = new Almacen_tipo_codificacion();
+        } else if (type === "Almacen_codificacion") {
+            o = new Almacen_codificacion();
         } else if (type === "Aduana") {
             o = new Aduana();
         } else if (type === "Cliente") {
@@ -75,6 +100,16 @@ function Factory() {
             oMng = new FolioMng(o)
         } else if (o.type === "Almacen") {
             oMng = new AlmacenMng(o)
+        } else if (o.type === "Almacen_zona") {
+            oMng = new Almacen_zonaMng(o)
+        } else if (o.type === "Almacen_layout") {
+            oMng = new Almacen_layoutMng(o)
+        } else if (o.type === "Almacen_plantilla") {
+            oMng = new Almacen_plantillaMng(o)
+        } else if (o.type === "Almacen_tipo_codificacion") {
+            oMng = new Almacen_tipo_codificacionMng(o)
+        } else if (o.type === "Almacen_codificacion") {
+            oMng = new Almacen_codificacionMng(o)
         } else if (o.type === "Aduana") {
             oMng = new AduanaMng(o)
         } else if (o.type === "Cliente") {

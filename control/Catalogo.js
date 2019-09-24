@@ -43,4 +43,37 @@ Catalogo.GetMercanciaByVendor = function(id, callback) {
     }));
 }
 
+// Almacen Layout
+// Build 
+Catalogo.AlmacenBuild = function(id_almacen, id_zona, callback) {
+    var factory = new Factory();
+    
+    var oA_P = factory.CreateObj('Almacen_plantilla');
+    var oA_PMng = factory.CreateMng(oA_P);
+
+    var oAc = factory.CreateObj('Almacen_codificacion');
+    var oAcMng = factory.CreateMng(oAc);
+
+    var oAz = factory.CreateObj('Almacen_zona');
+    oAz.Id = id_zona;
+    var oAzMng = factory.CreateMng(oAz);
+
+    var oAl = factory.CreateObj('Almacen_layout');
+    var oAlMng = factory.CreateMng(oAl);
+
+    TableMng.SelectBy(pool, oA_PMng, `id_almacen = ?`, id_almacen, () => {
+        TableMng.SelectBy(pool, oAcMng, 'id_tipo_codificacion = ? order by nivel desc', oA_P.Id_tipo_codificacion, (cods) => {
+            TableMng.Action(pool, oAzMng, 'get', () => {
+                oAl.Id_almacen = id_almacen;
+                oAl.Nombre = oAz.Nombre;
+                oAl.Clave = oAz.Clave;
+                TableMng.Action(pool, oAlMng, 'add', () => {
+                    callback(oAl);
+                })       
+                //callback(cods);
+            })            
+        })
+    });
+}
+
 module.exports = Catalogo;

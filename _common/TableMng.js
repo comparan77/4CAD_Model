@@ -2,8 +2,9 @@ function TableMng() { };
 
 TableMng.fillObj = function(objMng, row) {
     Object.keys(row).forEach(item => {
-        if(objMng.obj.hasOwnProperty(item))
+        if(objMng.obj.hasOwnProperty(item)) {
             objMng.obj[item] = row[item];
+        }
     });
 }
 
@@ -61,9 +62,11 @@ TableMng.Action = function(pool, objMng, action, callback, tran = null) {
         var data;
         switch (action) {
             case 'get':
-                TableMng.fillObj(objMng, res[0]);
+                TableMng.fillObj(objMng, res[0][0]);
                 data = res[0];
                 break;
+            case 'add':
+                objMng.obj.Id = res[0][0].id;
             default:
                 data = res[0];
         }

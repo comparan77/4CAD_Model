@@ -34,6 +34,9 @@ app.get('/transporte_linea_tipo/:id', (req, res) => {
 app.get('/vendor_mercancia/:id', (req, res) => {
   Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(JSON.stringify(data)));
 })
+app.get('/almacen_build/:id_almacen/zona/:id_zona', (req, res) => {
+  Catalogo.AlmacenBuild(req.params.id_almacen, req.params.id_zona, (data) => res.send(JSON.stringify(data)));
+})
 
 // Operacion
 // Post
