@@ -51,9 +51,6 @@ Catalogo.AlmacenBuild = function(id_almacen, id_zona, callback) {
     var oA_P = factory.CreateObj('Almacen_plantilla');
     var oA_PMng = factory.CreateMng(oA_P);
 
-    var oAc = factory.CreateObj('Almacen_codificacion');
-    var oAcMng = factory.CreateMng(oAc);
-
     var oAz = factory.CreateObj('Almacen_zona');
     oAz.Id = id_zona;
     var oAzMng = factory.CreateMng(oAz);
@@ -62,18 +59,64 @@ Catalogo.AlmacenBuild = function(id_almacen, id_zona, callback) {
     var oAlMng = factory.CreateMng(oAl);
 
     TableMng.SelectBy(pool, oA_PMng, `id_almacen = ?`, id_almacen, () => {
-        TableMng.SelectBy(pool, oAcMng, 'id_tipo_codificacion = ? order by nivel desc', oA_P.Id_tipo_codificacion, (cods) => {
-            TableMng.Action(pool, oAzMng, 'get', () => {
-                oAl.Id_almacen = id_almacen;
-                oAl.Nombre = oAz.Nombre;
-                oAl.Clave = oAz.Clave;
-                TableMng.Action(pool, oAlMng, 'add', () => {
-                    callback(oAl);
-                })       
-                //callback(cods);
-            })            
-        })
+        TableMng.Action(pool, oAzMng, 'get', () => {
+            oAl.Id_almacen = id_almacen;
+            oAl.Nombre = oAz.Nombre;
+            oAl.Clave = oAz.Clave;
+            TableMng.Action(pool, oAlMng, 'add', () => {
+                callback(oAl);
+
+                // cods.foreach(obj => {
+
+                // })
+            })       
+            //callback(cods);
+        })            
     });
+}
+
+Catalogo.AlmacenBuildCod = function(params, callback) {
+
+    var factory = new Factory();
+
+    var oA_P = factory.CreateObj('Almacen_plantilla');
+    var oA_PMng = factory.CreateMng(oA_P);
+
+    var oAc = factory.CreateObj('Almacen_codificacion');
+    var oAcMng = factory.CreateMng(oAc);
+
+    TableMng.SelectBy(pool, oA_PMng, `id_almacen = ?`, params.id_almacen, () => {
+        TableMng.SelectBy(pool, oAcMng, 'id_tipo_codificacion = ? and nivel = ?', [oA_P.Id_tipo_codificacion, params.nivel], () => {
+            Catalogo.Alamcen_layoutAdd(params.id_almacen, oAc, params.padre, params.cantidad, 1, () => {
+                callback('ready');
+            })
+        });    
+    });
+}
+
+Catalogo.Alamcen_layoutAdd = function(id_almacen, oAc, padre, cantidad, indice, callback) {
+    
+    var factory = new Factory();
+
+    var oAl = factory.CreateObj('Almacen_layout');
+    var oAlMng = factory.CreateMng(oAl);
+
+    var strClave =  indice.toString().padStart(oAc.Digitos, "0");
+
+    oAl.Id_almacen = id_almacen;
+    oAl.Nombre = oAc.Nombre + ' ' + strClave;
+    oAl.Clave = strClave;
+    oAl.Padre = padre;
+
+    if(indice <= cantidad) {
+        TableMng.Action(pool, oAlMng, 'add', () => {
+            indice++;
+            Catalogo.Alamcen_layoutAdd(id_almacen, oAc, padre, cantidad, indice, callback);
+        });
+    }
+    else
+        callback();
+        
 }
 
 module.exports = Catalogo;
