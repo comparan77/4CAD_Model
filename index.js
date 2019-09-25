@@ -40,6 +40,8 @@ app.get('/almacen_build/:id_almacen/zona/:id_zona', (req, res) => {
 app.get('/almacen_build_cod/:id_almacen/padre/:padre/nivel/:nivel/cantidad/:cantidad', (req, res) => {
   Catalogo.AlmacenBuildCod(req.params, (data) => res.send(JSON.stringify(data)));
 })
+app.get('/almacen_zona', (req, res) => { Catalogo.Almacen_zonas((data) => res.send(JSON.stringify(data)))})
+
 
 // Operacion
 // Post

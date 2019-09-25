@@ -116,7 +116,23 @@ Catalogo.Alamcen_layoutAdd = function(id_almacen, oAc, padre, cantidad, indice, 
     }
     else
         callback();
-        
+}
+
+Catalogo.Almacen_zonas = function(callback) {
+    TableMng.Select(pool, `
+        SELECT
+            a.id
+            ,a.nombre almacen
+            ,count(al.id) zonas
+        FROM
+            almacen a
+        LEFT JOIN almacen_layout al ON 
+            a.id = al.id_almacen
+            and al.padre = 0
+        GROUP BY a.id;
+    `, null, (data) => {
+        callback(data);
+    })
 }
 
 module.exports = Catalogo;
