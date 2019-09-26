@@ -34,14 +34,11 @@ app.get('/transporte_linea_tipo/:id', (req, res) => {
 app.get('/vendor_mercancia/:id', (req, res) => {
   Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(JSON.stringify(data)));
 })
-app.get('/almacen_build/:id_almacen/zona/:id_zona', (req, res) => {
-  Catalogo.AlmacenBuild(req.params.id_almacen, req.params.id_zona, (data) => res.send(JSON.stringify(data)));
-})
-app.get('/almacen_build_cod/:id_almacen/padre/:padre/nivel/:nivel/cantidad/:cantidad', (req, res) => {
+app.get('/almacen_build_cod/:id_almacen_zona/padre/:padre/nivel/:nivel/cantidad/:cantidad', (req, res) => {
   Catalogo.AlmacenBuildCod(req.params, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/almacen_zona', (req, res) => { Catalogo.Almacen_zonas((data) => res.send(JSON.stringify(data)))})
-
+app.get('/almacen_zona/:id_almacen', (req, res) => { Catalogo.Almacen_zonasByAlmacen(req.params.id_almacen, (data) => res.send(JSON.stringify(data)))})
 
 // Operacion
 // Post

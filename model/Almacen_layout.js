@@ -1,6 +1,6 @@
 function Almacen_layout() { 
 	this.Id = null;
-	this.Id_almacen = null;
+	this.Id_almacen_zona = null;
 	this.Nombre = null;
 	this.Clave = null;
 	this.Padre = null;
