@@ -113,8 +113,25 @@ Catalogo.Almacen_zonasByAlmacen = function(id_almacen, callback) {
     var oAl = factory.CreateObj('Almacen_zona');
     var oAlMng = factory.CreateMng(oAl);
 
-    TableMng.SelectBy(pool, oAlMng, `id_almacen = ? order by clave asc`, id_almacen, (data) => {
-        callback(data);
+    var oAtc = factory.CreateObj('Almacen_tipo_codificacion');
+    var oAtc_Mng = factory.CreateMng(oAtc);
+
+    TableMng.SelectBy(pool, oAlMng, `id_almacen = ? order by clave asc`, id_almacen, (lstAZ) => {
+        TableMng.Action(pool, oAtc_Mng, 'lst', (lstTC) => {
+
+            lstAZ.forEach(item => {
+                item.Tipo = '-';
+                oAtc = lstTC.find((obj)=> {
+                    return item.Id_tipo_codificacion == obj.Id;
+
+                })
+                ;
+                if(oAtc) {
+                    item.Tipo = oAtc.Nombre;
+                }
+            })
+            callback(lstAZ);
+        })
     })
 }
 
