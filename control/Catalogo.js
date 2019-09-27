@@ -78,6 +78,7 @@ Catalogo.Alamcen_layoutAdd = function(id_almacen_zona, oAc, padre, cantidad, ind
     oAl.Nombre = oAc.Nombre + ' ' + strClave;
     oAl.Clave = strClave;
     oAl.Padre = padre;
+    oAl.Nivel = oAc.Nivel;
 
     if(indice <= cantidad) {
         TableMng.Action(pool, oAlMng, 'add', () => {

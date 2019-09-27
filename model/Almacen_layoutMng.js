@@ -10,9 +10,10 @@ function Almacen_layoutMng (o, lst = null) {
 		Nombre: '',
 		Clave: '',
 		Padre: 0,
+		Nivel: 0,
 	}
 
-	this.QrySelBy = 'select Id, Id_almacen_zona, Nombre, Clave, Padre FROM almacen_layout WHERE ';
+	this.QrySelBy = 'select Id, Id_almacen_zona, Nombre, Clave, Padre, Nivel FROM almacen_layout WHERE ';
 
 };
 Almacen_layoutMng.prototype = Object.create(BaseMng.prototype);
@@ -24,5 +25,6 @@ Almacen_layoutMng.prototype.fillParameters = function(option) {
 	this.Params.Nombre = this.obj.Nombre == null ? this.Params.Nombre : this.obj.Nombre;
 	this.Params.Clave = this.obj.Clave == null ? this.Params.Clave : this.obj.Clave;
 	this.Params.Padre = this.obj.Padre == null ? this.Params.Padre : this.obj.Padre;
+	this.Params.Nivel = this.obj.Nivel == null ? this.Params.Nivel : this.obj.Nivel;
 }
 module.exports = Almacen_layoutMng;
