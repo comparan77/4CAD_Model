@@ -6,6 +6,7 @@ function Asn() {
 	this.Fecha_arribo = null;
 	this.Hora_arribo = null;
 	this.Id_mercancia_vendor = null;
+	this.Tarima_declarada = null;
 	this.Bulto_declarado = null;
 	this.Pieza_declarada = null;
 	this.Operador = null;
