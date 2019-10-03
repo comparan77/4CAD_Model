@@ -47,7 +47,7 @@ Operacion.getFolioByTipo = function(tipo, callback) {
 
 // Asn 
 // Add
-Operacion.addAsn = function(obj, callback) {
+Operacion.asnAdd = function(obj, callback) {
 
     var factory = new Factory();
     var oAsn = factory.CreateObj('Asn');
@@ -75,6 +75,27 @@ Operacion.addAsn = function(obj, callback) {
             Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
                 callback();
             });
+        });
+
+    });
+}
+
+// Entrada
+Operacion.entradaAdd = function(obj, callback) {
+    var factory = new Factory();
+    var oE = factory.CreateObj('Entrada');
+    
+    Object.keys(obj).forEach(item => {
+        if(oE.hasOwnProperty(item))
+        oE[item] = obj[item];
+    });
+    var oEMng = factory.CreateMng(oE);
+    
+    Operacion.getFolioByTipo('ENT', (folio) => {
+        
+        oE.Folio = folio;
+        TableMng.Action(pool, oEMng, 'add', () => {
+            callback();
         });
 
     });
@@ -148,7 +169,7 @@ Operacion.getAsnRecepcionCortinaById= function(id, callback) {
                 a.folio,
                 c.nombre cliente,
                 v.nombre vendor,
-                vm.nombre mercancia,
+                vm.nombre producto,
                 a.bulto_declarado,
                 a.pieza_declarada,
                 a.operador,
@@ -166,8 +187,8 @@ Operacion.getAsnRecepcionCortinaById= function(id, callback) {
                 a.id = asn_r.id_asn
             join cliente c on
                 c.id = a.id_cliente
-            join vendor_mercancia vm on
-                vm.id = a.id_mercancia_vendor
+            join vendor_producto vm on
+                vm.id = a.id_vendor_producto
             join vendor v on	
                 v.id = vm.id_vendor
             join transporte_linea tl on

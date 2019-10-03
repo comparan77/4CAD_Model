@@ -37,8 +37,8 @@ var Transporte_linea_tipoMng = require('./Transporte_linea_tipoMng.js');
 var Vendor = require('./Vendor.js');
 var VendorMng = require('./VendorMng.js');
 
-var Vendor_mercancia = require('./Vendor_mercancia.js');
-var Vendor_mercanciaMng = require('./Vendor_mercanciaMng.js');
+var Vendor_producto = require('./Vendor_producto.js');
+var Vendor_productoMng = require('./Vendor_productoMng.js');
 
 var Documento = require('./Documento.js');
 var DocumentoMng = require('./DocumentoMng.js');
@@ -48,6 +48,9 @@ var AsnMng = require('./AsnMng.js');
 
 var Asn_documento = require('./Asn_documento.js');
 var Asn_documentoMng = require('./Asn_documentoMng.js');
+
+var Entrada = require('./Entrada.js');
+var EntradaMng = require('./EntradaMng.js');
 
 function Factory() {
     this.CreateObj = function(type) {
@@ -77,8 +80,8 @@ function Factory() {
             o = new Transporte_linea();
         } else if (type === "Vendor") {
             o = new Vendor();
-        } else if (type === "Vendor_mercancia") {
-            o = new Vendor_mercancia();
+        } else if (type === "Vendor_producto") {
+            o = new Vendor_producto();
         } else if (type === "Documento") {
             o = new Documento();
         } else if (type === "Transporte_linea_tipo") {
@@ -87,6 +90,8 @@ function Factory() {
             o = new Asn();
         } else if (type === "Asn_documento") {
             o = new Asn_documento();
+        } else if (type === "Entrada") {
+            o = new Entrada();
         }
 
         o.type = type;
@@ -120,8 +125,8 @@ function Factory() {
             oMng = new Transporte_lineaMng(o)
         } else if (o.type === "Vendor") {
             oMng = new VendorMng(o)
-        } else if (o.type === "Vendor_mercancia") {
-            oMng = new Vendor_mercanciaMng(o)
+        } else if (o.type === "Vendor_producto") {
+            oMng = new Vendor_productoMng(o)
         } else if (o.type === "Documento") {
             oMng = new DocumentoMng(o)
         } else if (o.type === "Transporte_linea_tipo") {
@@ -130,6 +135,8 @@ function Factory() {
             oMng = new AsnMng(o)
         } else if (o.type === "Asn_documento") {
             oMng = new Asn_documentoMng(o)
+        } else if (o.type === "Entrada") {
+            oMng = new EntradaMng(o)
         }
 
         return oMng;

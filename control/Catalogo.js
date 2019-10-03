@@ -30,12 +30,12 @@ Catalogo.GetTransporteTipoByLinea = function(id, callback) {
     }));
 }
 
-// Vendor mercancia
-// Get mercancia by vendor
-Catalogo.GetMercanciaByVendor = function(id, callback) {
+// Vendor producto
+// Get producto by vendor
+Catalogo.vendorProductoGetByVendor = function(id, callback) {
 
     TableMng.Select(pool, `select vm.Id, vm.Nombre
-                    from vendor_mercancia vm 
+                    from vendor_producto vm 
                     join vendor v on
                     vm.id_vendor = v.id
                     where v.id = ?`, id, (data => {

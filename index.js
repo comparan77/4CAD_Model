@@ -31,22 +31,14 @@ app.get('/transporte_linea', (req, res) => Catalogo.lstCatalogo(getStrReq(req), 
 app.get('/transporte_linea_tipo/:id', (req, res) => {
   Catalogo.GetTransporteTipoByLinea(req.params.id, (data) => res.send(JSON.stringify(data)));
 })
-app.get('/vendor_mercancia/:id', (req, res) => {
-  Catalogo.GetMercanciaByVendor(req.params.id, (data) => res.send(JSON.stringify(data)));
+app.get('/vendor_producto/:id', (req, res) => {
+  Catalogo.vendorProductoGetByVendor(req.params.id, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/almacen_build_cod/:id_almacen_zona/padre/:padre/nivel/:nivel/cantidad/:cantidad', (req, res) => {
   Catalogo.AlmacenBuildCod(req.params, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/almacen_zona', (req, res) => { Catalogo.Almacen_zonas((data) => res.send(JSON.stringify(data)))})
 app.get('/almacen_zona/:id_almacen', (req, res) => { Catalogo.Almacen_zonasByAlmacen(req.params.id_almacen, (data) => res.send(JSON.stringify(data)))})
-
-// Operacion
-// Post
-app.post('/asn', (req, res) => {
-  Operacion.addAsn(req.body, (data) => {
-    res.send('Ready');
-  });
-});
 // Schedules
 app.get('/asn_schedule', (req, res) => {
   Operacion.getAsnSchedule((data) => res.send(JSON.stringify(data)))
@@ -63,6 +55,22 @@ app.get('/asn_rec_cortina/:almacen', (req, res) => {
 })
 app.get('/asn_rec_cortina_id/:id', (req, res) => {
   Operacion.getAsnRecepcionCortinaById(req.params.id, (data) => res.send(JSON.stringify(data)))
+})
+
+
+// Operacion
+// Post
+app.post('/asn', (req, res) => {
+  Operacion.asnAdd(req.body, () => {
+    res.send('Ready');
+  });
+});
+
+app.post('/entrada', (req, res) => {
+  console.log(req.body);
+  Operacion.entradaAdd(req.body, () => {
+    res.send('Ready');
+  })
 })
 
 // Para catalogos
