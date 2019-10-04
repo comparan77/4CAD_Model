@@ -37,6 +37,9 @@ app.get('/vendor_producto/:id', (req, res) => {
 app.get('/almacen_build_cod/:id_almacen_zona/padre/:padre/nivel/:nivel/cantidad/:cantidad', (req, res) => {
   Catalogo.AlmacenBuildCod(req.params, (data) => res.send(JSON.stringify(data)));
 })
+app.get('/almacen_ubicacionBuildByZona/:id_almacen_zona', (req, res) => {
+  Catalogo.Almacen_ubicacionBuild(req.params.id_almacen_zona, (data) => res.send(JSON.stringify(data)));
+})
 app.get('/almacen_zona', (req, res) => { Catalogo.Almacen_zonas((data) => res.send(JSON.stringify(data)))})
 app.get('/almacen_zona/:id_almacen', (req, res) => { Catalogo.Almacen_zonasByAlmacen(req.params.id_almacen, (data) => res.send(JSON.stringify(data)))})
 // Schedules

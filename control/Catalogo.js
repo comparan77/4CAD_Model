@@ -19,7 +19,7 @@ Catalogo.lstCatalogo = function(strObj, callback) {
 // Get transporte tipo by linea
 Catalogo.GetTransporteTipoByLinea = function(id, callback) {
 
-    TableMng.Select(pool, `select tt.Id, tt.Nombre, tt.placa, tt.caja, tt.cont_1, tt.cont_2 
+    TableMng.Execute(pool, `select tt.Id, tt.Nombre, tt.placa, tt.caja, tt.cont_1, tt.cont_2 
                     from transporte_linea_tipo tlt 
                     join transporte_linea tl on
                     tlt.id_transporte_linea = tl.id
@@ -34,7 +34,7 @@ Catalogo.GetTransporteTipoByLinea = function(id, callback) {
 // Get producto by vendor
 Catalogo.vendorProductoGetByVendor = function(id, callback) {
 
-    TableMng.Select(pool, `select vm.Id, vm.Nombre
+    TableMng.Execute(pool, `select vm.Id, vm.Nombre
                     from vendor_producto vm 
                     join vendor v on
                     vm.id_vendor = v.id
@@ -90,8 +90,51 @@ Catalogo.Alamcen_layoutAdd = function(id_almacen_zona, oAc, padre, cantidad, ind
         callback();
 }
 
+Catalogo.Almacen_ubicacionBuild = function(id_almacen_zona, callback) {
+    var factory = new Factory();
+
+    var oAl = factory.CreateObj('Almacen_layout');
+    var oAlMng = factory.CreateMng(oAl);
+
+    var arrIstVal = [];
+
+    TableMng.SelectBy(pool, oAlMng, 'id_almacen_zona = ?', id_almacen_zona, (data) => {
+        TableMng.Execute(pool, `select max(nivel) maxLevel from almacen_layout where id_almacen_zona = ?`,
+            id_almacen_zona, (res) => {
+                var arrLastLevel = data.filter((obj) => {
+                    return obj.Nivel == res[0].maxLevel;
+                })
+                arrLastLevel.forEach(item => {
+                    Catalogo.Almacen_findParent(data, item.Padre, item.Id, item.Nombre, (newIst)=> {
+                        arrIstVal.push([id_almacen_zona, newIst.key, newIst.name])
+                    });
+                })
+                TableMng.Execute(pool, 'insert into almacen_ubicacion (id_almacen_zona, clave, nombre) values  ?', [arrIstVal], ()=> {
+                    callback('ready');
+                })
+            })
+    });
+}
+
+Catalogo.Almacen_findParent = function (arrLayout, padre, clave, nombre, callback) {
+
+    var newKey = '';
+    var newName = '';
+    var parent = arrLayout.find((obj) => {
+        return obj.Id == padre;
+    });
+    if(parent!=undefined) {
+        newKey = parent.Id + '|' + clave;
+        newName = parent.Nombre + ', ' + nombre
+        Catalogo.Almacen_findParent(arrLayout, parent.Padre, newKey, newName, callback);
+    }
+    else {
+        callback({key: clave, name: nombre});
+    }
+}
+
 Catalogo.Almacen_zonas = function(callback) {
-    TableMng.Select(pool, `
+    TableMng.Execute(pool, `
 SELECT
     a.id
    ,a.nombre almacen

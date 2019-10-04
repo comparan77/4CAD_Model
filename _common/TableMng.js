@@ -8,7 +8,7 @@ TableMng.fillObj = function(objMng, row) {
     });
 }
 
-TableMng.Select = function(pool, sql, values, callback, tran = null) {
+TableMng.Execute = function(pool, sql, values, callback, tran = null) {
     pool.query(sql, values, function(err, res, fields) {
         if(err) throw err;
         if(callback) callback(res);

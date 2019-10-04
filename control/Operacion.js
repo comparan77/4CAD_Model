@@ -8,7 +8,7 @@ function Operacion () {};
 // Consultas a la base de datos genéricas
 // Fecha
 Operacion.getAnioActFromDB = function(callback) {
-    TableMng.Select(pool, 'select year(now()) YearDb from dual', '', (data) => {
+    TableMng.Execute(pool, 'select year(now()) YearDb from dual', '', (data) => {
         callback(data);
     })
 }
@@ -103,7 +103,7 @@ Operacion.entradaAdd = function(obj, callback) {
 
 // Schedule
 Operacion.getAsnSchedule = function(callback) {
-    TableMng.Select(pool, `select a.id, a.folio title, c.nombre cliente, 
+    TableMng.Execute(pool, `select a.id, a.folio title, c.nombre cliente, 
                                 concat(a.fecha_arribo, "T", a.hora_arribo) start, 
                                 tt.nombre transporte
                             from asn a join cliente c 
@@ -116,7 +116,7 @@ Operacion.getAsnSchedule = function(callback) {
 }
 
 Operacion.getAsnScheduleByCliente = function(cliente, callback) {
-    TableMng.Select(pool, `select a.id, a.folio title, c.nombre cliente, 
+    TableMng.Execute(pool, `select a.id, a.folio title, c.nombre cliente, 
                                 concat(a.fecha_arribo, "T", a.hora_arribo) start, 
                                 tt.nombre transporte
                             from asn a join cliente c 
@@ -131,7 +131,7 @@ Operacion.getAsnScheduleByCliente = function(cliente, callback) {
 
 // Cortinas con recepcion
 Operacion.getAsnRecepcionCortina = function(callback) {
-    TableMng.Select(pool, `select a.nombre almacen, c.id_almacen, count(c.id) cortinas, 
+    TableMng.Execute(pool, `select a.nombre almacen, c.id_almacen, count(c.id) cortinas, 
     count(ar.id) operacion from cortina c join almacen a on a.id = c.id_almacen  
     left join asn_recepcion ar 
     on ar.id_cortina = c.id and ar.en_operacion = 1
@@ -141,7 +141,7 @@ Operacion.getAsnRecepcionCortina = function(callback) {
 }
 
 Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
-    TableMng.Select(pool, `select
+    TableMng.Execute(pool, `select
                     a.nombre almacen
                     ,c.nombre cortina
                     ,c.id id_cortina
@@ -164,7 +164,7 @@ Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
 
 Operacion.getAsnRecepcionCortinaById= function(id, callback) {
 
-    TableMng.Select(pool, `select
+    TableMng.Execute(pool, `select
                 a.id id_asn,
                 a.folio,
                 c.nombre cliente,
