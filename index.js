@@ -59,7 +59,10 @@ app.get('/asn_rec_cortina/:almacen', (req, res) => {
 app.get('/asn_rec_cortina_id/:id', (req, res) => {
   Operacion.getAsnRecepcionCortinaById(req.params.id, (data) => res.send(JSON.stringify(data)))
 })
-
+// Recepcion
+app.get('/recibidos', (req, res) => {
+  Operacion.recibidosGet((data) => res.send(JSON.stringify(data)));
+})
 
 // Operacion
 // Post

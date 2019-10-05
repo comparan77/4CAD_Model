@@ -238,4 +238,24 @@ Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
     });
 }
 
+// Recibidos
+Operacion.recibidosGet = function(callback) {
+    TableMng.Execute(pool, 
+        `
+        SELECT
+        e.folio Folio
+       ,e.cliente Cliente
+       ,e.producto Producto
+       ,e.tarimas Tarimas
+       ,e.bultos Cajas
+       ,e.piezas Piezas
+   from entrada_producto ep
+   join entrada e on 
+       e.id = ep.id_entrada
+   where ep.id not in (select id_entrada_producto from entrada_producto_ubicacion);
+        `, '', (data) => {
+            callback(data);
+        })
+}
+
 module.exports = Operacion;
