@@ -269,7 +269,7 @@ having count(ep.id) - count(epu.id) != 0 ) u ON
         })
 }
 
-Operacion.recibidosUbica = function(id_entrada_producto, callback) {
+Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, callback) {
     var factory = new Factory();
     
     var oEP = factory.CreateObj('Entrada_producto');
@@ -279,12 +279,21 @@ Operacion.recibidosUbica = function(id_entrada_producto, callback) {
     var oAU = factory.CreateObj('Almacen_ubicacion');
     var oAUMng = factory.CreateMng(oAU);
 
+    var oEPU = factory.CreateObj('Entrada_producto_ubicacion');
+    var oEPUMng = factory.CreateMng(oEPU);
+
     TableMng.Action(pool, oEPMng, 'get', ()=> {
         TableMng.SelectBy(pool, oAUMng, `id_almacen_rotacion = ?
         AND referencia IS NULL LIMIT 1;`, oEP.Id_almacen_rotacion, () => {
             oAU.Referencia = oEP.Folio;
             TableMng.Action(pool, oAUMng, 'udt', ()  => {
-                callback('Ready');
+                oEPU.Id_entrada = oEP.Id_entrada;
+                oEPU.Id_entrada_producto = oEP.Id;
+                oEPU.Id_almacen_ubicacion = oAU.Id;  
+                oEPU.Id_almacen_movimiento = id_almacen_movimiento;  
+                TableMng.Action(pool, oEPUMng, 'add', ()=> {
+                    callback(oEPU);
+                })
             })
         })
     })

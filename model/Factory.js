@@ -105,7 +105,7 @@ function Factory() {
             o = new Entrada();
         } else if (type === "Entrada_producto") {
             o = new Entrada_producto();
-        } else if (type === "Entrada_producto_ubiaccion") {
+        } else if (type === "Entrada_producto_ubicacion") {
             o = new Entrada_producto_ubicacion();
         } 
 

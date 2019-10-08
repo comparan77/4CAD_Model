@@ -24,6 +24,5 @@ Entrada_producto_ubicacionMng.prototype.fillParameters = function(option) {
 	this.Params.Id_entrada_producto = this.obj.Id_entrada_producto == null ? this.Params.Id_entrada_producto : this.obj.Id_entrada_producto;
 	this.Params.Id_almacen_ubicacion = this.obj.Id_almacen_ubicacion == null ? this.Params.Id_almacen_ubicacion : this.obj.Id_almacen_ubicacion;
 	this.Params.Id_almacen_movimiento = this.obj.Id_almacen_movimiento == null ? this.Params.Id_almacen_movimiento : this.obj.Id_almacen_movimiento;
-	this.Params.Fecha_movimiento = this.obj.Fecha_movimiento == null ? this.Params.Fecha_movimiento : this.obj.Fecha_movimiento;
 }
 module.exports = Entrada_producto_ubicacionMng;

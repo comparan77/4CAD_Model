@@ -80,8 +80,8 @@ app.post('/entrada', (req, res) => {
 })
 // Put
 // Ubica recibidos
-app.put('/recibidos_ubica/:id_entrada_producto', (req, res) => {
-  Operacion.recibidosUbica(req.params.id_entrada_producto, (data) => res.send(JSON.stringify(data)));
+app.put('/recibidos_ubica/', (req, res) => {
+  Operacion.recibidosUbica(req.body.id_entrada_producto, req.body.id_almacen_movimiento, (data) => res.send(JSON.stringify(data)));
 })
 
 // Para catalogos
