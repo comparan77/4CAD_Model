@@ -12,11 +12,11 @@ function EntradaMng (o, lst = null) {
 		Almacen: '',
 		Producto: '',
 		Tarimas: 0,
-		Bultos: 0,
+		Cajas: 0,
 		Piezas: 0,
 	}
 
-	this.QrySelBy = 'select Id, Id_asn, Folio, Cliente, Almacen, Producto, Tarimas, Bultos, Piezas FROM entrada WHERE ';
+	this.QrySelBy = 'select Id, Id_asn, Folio, Cliente, Almacen, Producto, Tarimas, Cajas, Piezas FROM entrada WHERE ';
 
 };
 EntradaMng.prototype = Object.create(BaseMng.prototype);
@@ -30,7 +30,7 @@ EntradaMng.prototype.fillParameters = function(option) {
 	this.Params.Almacen = this.obj.Almacen == null ? this.Params.Almacen : this.obj.Almacen;
 	this.Params.Producto = this.obj.Producto == null ? this.Params.Producto : this.obj.Producto;
 	this.Params.Tarimas = this.obj.Tarimas == null ? this.Params.Tarimas : this.obj.Tarimas;
-	this.Params.Bultos = this.obj.Bultos == null ? this.Params.Bultos : this.obj.Bultos;
+	this.Params.Cajas = this.obj.Cajas == null ? this.Params.Cajas : this.obj.Cajas;
 	this.Params.Piezas = this.obj.Piezas == null ? this.Params.Piezas : this.obj.Piezas;
 }
 module.exports = EntradaMng;

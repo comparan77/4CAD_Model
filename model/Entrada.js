@@ -6,7 +6,7 @@ function Entrada() {
 	this.Almacen = null;
 	this.Producto = null;
 	this.Tarimas = null;
-	this.Bultos = null;
+	this.Cajas = null;
 	this.Piezas = null;
 	this.IsActive = null;
 }; 
