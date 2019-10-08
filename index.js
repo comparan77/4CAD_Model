@@ -78,6 +78,11 @@ app.post('/entrada', (req, res) => {
     res.send('Ready');
   })
 })
+// Put
+// Ubica recibidos
+app.put('/recibidos_ubica/:id_entrada_producto', (req, res) => {
+  Operacion.recibidosUbica(req.params.id_entrada_producto, (data) => res.send(JSON.stringify(data)));
+})
 
 // Para catalogos
 function getStrReq(req) {

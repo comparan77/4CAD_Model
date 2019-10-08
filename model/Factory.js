@@ -19,6 +19,9 @@ var Almacen_tipo_codificacionMng = require('./Almacen_tipo_codificacionMng.js');
 var Almacen_codificacion = require('./Almacen_codificacion.js');
 var Almacen_codificacionMng = require('./Almacen_codificacionMng.js');
 
+var Almacen_ubicacion = require('./Almacen_ubicacion.js');
+var Almacen_ubicacionMng = require('./Almacen_ubicacionMng.js');
+
 var Cliente = require('./Cliente.js');
 var ClienteMng = require('./ClienteMng.js');
 
@@ -52,6 +55,12 @@ var Asn_documentoMng = require('./Asn_documentoMng.js');
 var Entrada = require('./Entrada.js');
 var EntradaMng = require('./EntradaMng.js');
 
+var Entrada_producto = require('./Entrada_producto.js');
+var Entrada_productoMng = require('./Entrada_productoMng.js');
+
+var Entrada_producto_ubicacion = require('./Entrada_producto_ubicacion.js');
+var Entrada_producto_ubicacionMng = require('./Entrada_producto_ubicacionMng.js');
+
 function Factory() {
     this.CreateObj = function(type) {
         var o;
@@ -70,6 +79,8 @@ function Factory() {
             o = new Almacen_tipo_codificacion();
         } else if (type === "Almacen_codificacion") {
             o = new Almacen_codificacion();
+        } else if (type === "Almacen_ubicacion") {
+            o = new Almacen_ubicacion();
         } else if (type === "Aduana") {
             o = new Aduana();
         } else if (type === "Cliente") {
@@ -92,7 +103,11 @@ function Factory() {
             o = new Asn_documento();
         } else if (type === "Entrada") {
             o = new Entrada();
-        }
+        } else if (type === "Entrada_producto") {
+            o = new Entrada_producto();
+        } else if (type === "Entrada_producto_ubiaccion") {
+            o = new Entrada_producto_ubicacion();
+        } 
 
         o.type = type;
         return o;
@@ -115,6 +130,8 @@ function Factory() {
             oMng = new Almacen_tipo_codificacionMng(o)
         } else if (o.type === "Almacen_codificacion") {
             oMng = new Almacen_codificacionMng(o)
+        } else if (o.type === "Almacen_ubicacion") {
+            oMng = new Almacen_ubicacionMng(o)
         } else if (o.type === "Aduana") {
             oMng = new AduanaMng(o)
         } else if (o.type === "Cliente") {
@@ -137,6 +154,10 @@ function Factory() {
             oMng = new Asn_documentoMng(o)
         } else if (o.type === "Entrada") {
             oMng = new EntradaMng(o)
+        } else if (o.type === "Entrada_producto") {
+            oMng = new Entrada_productoMng(o)
+        } else if (o.type === "Entrada_producto_ubicacion") {
+            oMng = new Entrada_producto_ubicacionMng(o)
         }
 
         return oMng;

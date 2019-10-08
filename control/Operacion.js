@@ -242,20 +242,41 @@ Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
 Operacion.recibidosGet = function(callback) {
     TableMng.Execute(pool, 
         `
-        SELECT
-        e.folio Folio
-       ,e.cliente Cliente
-       ,e.producto Producto
-       ,e.tarimas Tarimas
-       ,e.bultos Cajas
-       ,e.piezas Piezas
-   from entrada_producto ep
-   join entrada e on 
-       e.id = ep.id_entrada
-   where ep.id not in (select id_entrada_producto from entrada_producto_ubicacion);
+        SELECT 
+	e.Id Id_entrada
+    ,e.folio Folio
+    ,e.cliente Cliente
+    ,e.producto Producto
+    ,u.todos Tarimas
+	,u.ubicados Ubicados
+	,u.pendientes Pendientes
+FROM
+	entrada e
+JOIN (
+	
+SELECT
+	 ep.id_entrada
+	,count(ep.id) todos
+	,count(epu.id) ubicados
+	,count(ep.id) - count(epu.id) pendientes
+FROM entrada_producto ep 
+LEFT JOIN entrada_producto_ubicacion epu ON
+	ep.id = epu.id_entrada_producto
+having count(ep.id) - count(epu.id) != 0 ) u ON
+	u.id_entrada = e.id;
         `, '', (data) => {
             callback(data);
         })
+}
+
+Operacion.recibidosUbica = function(id_entrada_producto, callback) {
+    var factory = new Factory();
+    var oEP = factory.CreateObj('Entrada_producto');
+    oEP.Id = id_entrada_producto;
+    var oEPMng = factory.CreateMng(oEP);
+    TableMng.Action(pool, oEPMng, 'get', ()=> {
+        callback(oEP);
+    })
 }
 
 module.exports = Operacion;
