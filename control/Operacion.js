@@ -271,11 +271,22 @@ having count(ep.id) - count(epu.id) != 0 ) u ON
 
 Operacion.recibidosUbica = function(id_entrada_producto, callback) {
     var factory = new Factory();
+    
     var oEP = factory.CreateObj('Entrada_producto');
     oEP.Id = id_entrada_producto;
     var oEPMng = factory.CreateMng(oEP);
+    
+    var oAU = factory.CreateObj('Almacen_ubicacion');
+    var oAUMng = factory.CreateMng(oAU);
+
     TableMng.Action(pool, oEPMng, 'get', ()=> {
-        callback(oEP);
+        TableMng.SelectBy(pool, oAUMng, `id_almacen_rotacion = ?
+        AND referencia IS NULL LIMIT 1;`, oEP.Id_almacen_rotacion, () => {
+            oAU.Referencia = oEP.Folio;
+            TableMng.Action(pool, oAUMng, 'udt', ()  => {
+                callback('Ready');
+            })
+        })
     })
 }
 
