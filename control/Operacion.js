@@ -269,6 +269,33 @@ having count(ep.id) - count(epu.id) != 0 ) u ON
         })
 }
 
+Operacion.entrada_productoLstBy = function(id_entrada, callback) {
+    
+    TableMng.Execute(pool, `
+    SELECT 
+     ep.id Id_entrada_producto
+	,e.producto Producto
+	,ar.nombre Rotacion
+	,pf.nombre Formato
+	,ep.folio Folio
+	,ep.cajas Cajas
+	,ep.piezas Piezas
+	,COALESCE(epu.id_almacen_ubicacion, 0) Ubicado
+FROM entrada_producto ep
+JOIN entrada e ON
+	e.id = ep.id_entrada
+JOIN producto_formato pf ON
+	pf.id = ep.id_producto_formato
+JOIN almacen_rotacion ar ON
+	ar.id = ep.id_almacen_rotacion
+LEFT JOIN entrada_producto_ubicacion epu ON
+	epu.id_entrada_producto = ep.id
+WHERE ep.id_entrada = ?;
+    `, id_entrada, (res) => {
+        callback(res);
+    })
+}
+
 Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, callback) {
     var factory = new Factory();
     

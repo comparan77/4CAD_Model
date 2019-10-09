@@ -64,7 +64,12 @@ app.get('/recibidos', (req, res) => {
   Operacion.recibidosGet((data) => res.send(JSON.stringify(data)));
 })
 
+
 // Operacion
+// Get
+app.get('/entrada_producto/:id_entrada', (req, res) => {
+  Operacion.entrada_productoLstBy(req.params.id_entrada, (data) => res.send(JSON.stringify(data)));
+})
 // Post
 app.post('/asn', (req, res) => {
   Operacion.asnAdd(req.body, () => {
