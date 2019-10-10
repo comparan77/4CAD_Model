@@ -279,7 +279,11 @@ Operacion.entrada_productoLstBy = function(id_entrada, callback) {
 	,pf.nombre Formato
 	,ep.folio Folio
 	,ep.cajas Cajas
-	,ep.piezas Piezas
+    ,ep.piezas Piezas
+    ,CASE
+        WHEN ep.id_producto_referencia IS NULL OR ep.producto_referencia IS NULL THEN ''
+        ELSE CONCAT(pr.nombre, ': ', ep.producto_referencia) END Referencia
+    ,COALESCE(ep.lote, '-') Lote
 	,COALESCE(epu.id_almacen_ubicacion, 0) Ubicado
 FROM entrada_producto ep
 JOIN entrada e ON
@@ -289,7 +293,9 @@ JOIN producto_formato pf ON
 JOIN almacen_rotacion ar ON
 	ar.id = ep.id_almacen_rotacion
 LEFT JOIN entrada_producto_ubicacion epu ON
-	epu.id_entrada_producto = ep.id
+    epu.id_entrada_producto = ep.id
+LEFT JOIN producto_referencia pr ON
+    pr.id = ep.id_producto_referencia
 WHERE ep.id_entrada = ?;
     `, id_entrada, (res) => {
         callback(res);
