@@ -332,4 +332,21 @@ Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, 
     })
 }
 
+Operacion.ubicadosGet = function(id_almacen_movimiento_grupo, callback) {
+    TableMng.Execute(pool, 
+        `
+    SELECT DISTINCT
+        e.id Id_entrada
+       ,e.folio Folio
+   FROM entrada_producto_ubicacion epu 
+   JOIN entrada e ON
+       e.id = epu.id_entrada
+   JOIN almacen_movimiento am ON
+       am.id = epu.id_almacen_movimiento
+       and am.id_grupo = ?;
+        `, id_almacen_movimiento_grupo, (data) => {
+            callback(data);
+        });
+}
+
 module.exports = Operacion;
