@@ -354,16 +354,16 @@ Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrad
         `
     SELECT
         ep.id_entrada Id_entrada
+       ,ep.id Id_entrada_producto
        ,ep.folio Folio
        ,pm.nombre Metodo
        ,pf.nombre Formato
-       ,COUNT(ep.id) Cantidad
-       ,COUNT(ep.cajas) Cajas
-       ,COUNT(ep.piezas) Piezas
-       ,COALESCE(pr.nombre, 'S/T') Tipo_referencia
+       ,ep.cajas Cajas
+       ,ep.piezas Piezas
+       ,COALESCE(pr.nombre, '-') Tipo_referencia
        ,COALESCE(ep.producto_referencia, '-') Referencia
-       ,COALESCE(ep.lote, 'S/L') Lote
-       ,COALESCE(ep.caducidad, 'S/C') Caducidad
+       ,COALESCE(ep.lote, '-') Lote
+       ,COALESCE(ep.caducidad, '-') Caducidad
    FROM 
    entrada_producto ep
    JOIN entrada_producto_ubicacion epu ON
@@ -377,12 +377,7 @@ Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrad
        pf.id = ep.id_producto_formato
    LEFT JOIN producto_referencia pr ON
        pr.id = ep.id_producto_referencia
-   WHERE ep.id_entrada = ?
-   GROUP BY 
-        ep.folio
-       ,ep.id_producto_referencia
-       ,ep.producto_referencia
-       ,ep.lote;
+   WHERE ep.id_entrada = ?;
         `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
             callback(data);
         });
