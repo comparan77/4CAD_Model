@@ -10,6 +10,7 @@ function Entrada_producto() {
 	this.Cajas = null;
 	this.Piezas = null;
 	this.Lote = null;
+	this.Caducidad = null;
 	this.IsActive = null;
 }; 
 module.exports = Entrada_producto;

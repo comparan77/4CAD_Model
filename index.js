@@ -73,6 +73,10 @@ app.get('/entrada_producto/:id_entrada', (req, res) => {
 app.get('/ubicados/:key', (req, res) => { 
   Operacion.ubicadosGet(req.params.key, (data) => res.send(JSON.stringify(data)));
 })
+app.get('/productos_ubicados/:gpo/key/:key', (req, res) => { 
+  Operacion.productosUbicadosGet(req.params.gpo, req.params.key, (data) => res.send(JSON.stringify(data)));
+})
+
 // Post
 app.post('/asn', (req, res) => {
   Operacion.asnAdd(req.body, () => {

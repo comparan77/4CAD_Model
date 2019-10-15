@@ -349,4 +349,43 @@ Operacion.ubicadosGet = function(id_almacen_movimiento_grupo, callback) {
         });
 }
 
+Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrada, callback) {
+    TableMng.Execute(pool, 
+        `
+    SELECT
+        ep.id_entrada Id_entrada
+       ,ep.folio Folio
+       ,pm.nombre Metodo
+       ,pf.nombre Formato
+       ,COUNT(ep.id) Cantidad
+       ,COUNT(ep.cajas) Cajas
+       ,COUNT(ep.piezas) Piezas
+       ,COALESCE(pr.nombre, 'S/T') Tipo_Referencia
+       ,COALESCE(ep.producto_referencia, '-') Referencia
+       ,COALESCE(ep.lote, 'S/L') Lote
+       ,COALESCE(ep.caducidad, 'S/C') caducidad
+   FROM 
+   entrada_producto ep
+   JOIN entrada_producto_ubicacion epu ON
+       epu.id_entrada_producto = ep.id
+   JOIN almacen_movimiento am ON
+       am.id = epu.id_almacen_movimiento
+       and am.id_grupo = ?
+   JOIN producto_metodo pm ON
+       pm.id = ep.id_producto_metodo
+   JOIN producto_formato pf ON
+       pf.id = ep.id_producto_formato
+   LEFT JOIN producto_referencia pr ON
+       pr.id = ep.id_producto_referencia
+   WHERE ep.id_entrada = ?
+   GROUP BY 
+        ep.folio
+       ,ep.id_producto_referencia
+       ,ep.producto_referencia
+       ,ep.lote;
+        `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
+            callback(data);
+        });
+}
+
 module.exports = Operacion;

@@ -16,9 +16,10 @@ function Entrada_productoMng (o, lst = null) {
 		Cajas: 0,
 		Piezas: 0,
 		Lote: '',
+		Caducidad: '',
 	}
 
-	this.QrySelBy = 'select Id, Id_entrada, Id_producto_metodo, Id_producto_formato, Id_almacen_rotacion, Id_producto_referencia, Producto_referencia, Folio, Cajas, Piezas, Lote FROM entrada_producto WHERE ';
+	this.QrySelBy = 'select Id, Id_entrada, Id_producto_metodo, Id_producto_formato, Id_almacen_rotacion, Id_producto_referencia, Producto_referencia, Folio, Cajas, Piezas, Lote, Caducidad FROM entrada_producto WHERE ';
 
 };
 Entrada_productoMng.prototype = Object.create(BaseMng.prototype);
@@ -36,5 +37,6 @@ Entrada_productoMng.prototype.fillParameters = function(option) {
 	this.Params.Cajas = this.obj.Cajas == null ? this.Params.Cajas : this.obj.Cajas;
 	this.Params.Piezas = this.obj.Piezas == null ? this.Params.Piezas : this.obj.Piezas;
 	this.Params.Lote = this.obj.Lote == null ? this.Params.Lote : this.obj.Lote;
+	this.Params.Caducidad = this.obj.Caducidad == null ? this.Params.Caducidad : this.obj.Caducidad;
 }
 module.exports = Entrada_productoMng;
