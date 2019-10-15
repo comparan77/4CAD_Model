@@ -360,10 +360,10 @@ Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrad
        ,COUNT(ep.id) Cantidad
        ,COUNT(ep.cajas) Cajas
        ,COUNT(ep.piezas) Piezas
-       ,COALESCE(pr.nombre, 'S/T') Tipo_Referencia
+       ,COALESCE(pr.nombre, 'S/T') Tipo_referencia
        ,COALESCE(ep.producto_referencia, '-') Referencia
        ,COALESCE(ep.lote, 'S/L') Lote
-       ,COALESCE(ep.caducidad, 'S/C') caducidad
+       ,COALESCE(ep.caducidad, 'S/C') Caducidad
    FROM 
    entrada_producto ep
    JOIN entrada_producto_ubicacion epu ON
