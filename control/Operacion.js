@@ -280,10 +280,6 @@ Operacion.entrada_productoLstBy = function(id_entrada, callback) {
 	,ep.folio Folio
 	,ep.cajas Cajas
     ,ep.piezas Piezas
-    ,CASE
-        WHEN ep.id_producto_referencia IS NULL OR ep.producto_referencia IS NULL THEN ''
-        ELSE CONCAT(pr.nombre, ': ', ep.producto_referencia) END Referencia
-    ,COALESCE(ep.lote, '-') Lote
 	,COALESCE(epu.id_almacen_ubicacion, 0) Ubicado
 FROM entrada_producto ep
 JOIN entrada e ON
@@ -294,8 +290,6 @@ JOIN almacen_rotacion ar ON
 	ar.id = ep.id_almacen_rotacion
 LEFT JOIN entrada_producto_ubicacion epu ON
     epu.id_entrada_producto = ep.id
-LEFT JOIN producto_referencia pr ON
-    pr.id = ep.id_producto_referencia
 WHERE ep.id_entrada = ?;
     `, id_entrada, (res) => {
         callback(res);
@@ -335,15 +329,41 @@ Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, 
 Operacion.ubicadosGet = function(id_almacen_movimiento_grupo, callback) {
     TableMng.Execute(pool, 
         `
-    SELECT DISTINCT
-        e.id Id_entrada
-       ,e.folio Folio
-   FROM entrada_producto_ubicacion epu 
-   JOIN entrada e ON
-       e.id = epu.id_entrada
-   JOIN almacen_movimiento am ON
-       am.id = epu.id_almacen_movimiento
-       and am.id_grupo = ?;
+SELECT DISTINCT
+     c.nombre Cliente
+    ,e.id Id_entrada
+    ,e.folio Folio
+    ,COALESCE(rf.Referencia, '') Referencias
+FROM entrada_producto_ubicacion epu 
+JOIN entrada e ON
+    e.id = epu.id_entrada
+JOIN asn a ON
+    e.id_asn = a.id
+JOIN cliente c ON
+    c.id = a.id_cliente
+JOIN almacen_movimiento am ON
+    am.id = epu.id_almacen_movimiento
+    and am.id_grupo = ?
+LEFT JOIN asn_documento ad ON
+    ad.id_asn = a.id
+LEFT JOIN documento d ON
+    d.id = ad.id_documento
+LEFT JOIN (
+    SELECT 
+        tbl.Id_asn Id_asn
+        ,GROUP_CONCAT(tbl.Referencia separator ', ') Referencia
+    FROM (
+    SELECT
+        a.id Id_asn
+        ,CONCAT(d.nombre, ':', GROUP_CONCAT(ad.referencia separator ',')) Referencia
+    FROM asn_documento ad
+    JOIN asn a ON
+        a.id = ad.id_asn
+    JOIN documento d ON
+        d.id = ad.id_documento
+    GROUP BY a.id, ad.id) tbl GROUP BY tbl.Id_asn
+) rf ON
+    a.id = rf.Id_asn;
         `, id_almacen_movimiento_grupo, (data) => {
             callback(data);
         });
@@ -360,10 +380,6 @@ Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrad
        ,pf.nombre Formato
        ,ep.cajas Cajas
        ,ep.piezas Piezas
-       ,COALESCE(pr.nombre, '-') Tipo_referencia
-       ,COALESCE(ep.producto_referencia, '-') Referencia
-       ,COALESCE(ep.lote, '-') Lote
-       ,COALESCE(ep.caducidad, '-') Caducidad
    FROM 
    entrada_producto ep
    JOIN entrada_producto_ubicacion epu ON
@@ -375,8 +391,6 @@ Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrad
        pm.id = ep.id_producto_metodo
    JOIN producto_formato pf ON
        pf.id = ep.id_producto_formato
-   LEFT JOIN producto_referencia pr ON
-       pr.id = ep.id_producto_referencia
    WHERE ep.id_entrada = ?;
         `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
             callback(data);
