@@ -242,12 +242,13 @@ Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
 Operacion.recibidosGet = function(callback) {
     TableMng.Execute(pool, 
         `
-        SELECT 
+SELECT 
 	e.Id Id_entrada
     ,e.folio Folio
     ,e.cliente Cliente
     ,e.producto Producto
-    ,u.todos Tarimas
+    ,u.formato Formato
+    ,u.todos Cantidad
 	,u.ubicados Ubicados
 	,u.pendientes Pendientes
 FROM
@@ -256,10 +257,13 @@ JOIN (
 	
 SELECT
 	 ep.id_entrada
+	,pf.nombre formato
 	,count(ep.id) todos
 	,count(epu.id) ubicados
 	,count(ep.id) - count(epu.id) pendientes
 FROM entrada_producto ep 
+JOIN producto_formato pf ON
+	pf.id = ep.id_producto_formato
 LEFT JOIN entrada_producto_ubicacion epu ON
 	ep.id = epu.id_entrada_producto
 having count(ep.id) - count(epu.id) != 0 ) u ON
