@@ -247,7 +247,7 @@ SELECT
     ,e.folio Folio
     ,e.cliente Cliente
     ,e.producto Producto
-    ,u.formato Formato
+    ,u.u_a UAlm
     ,u.todos Cantidad
 	,u.ubicados Ubicados
 	,u.pendientes Pendientes
@@ -257,13 +257,13 @@ JOIN (
 	
 SELECT
 	 ep.id_entrada
-	,pf.nombre formato
+	,ua.nombre u_a
 	,count(ep.id) todos
 	,count(epu.id) ubicados
 	,count(ep.id) - count(epu.id) pendientes
 FROM entrada_producto ep 
-JOIN producto_formato pf ON
-	pf.id = ep.id_producto_formato
+JOIN unidad_almacenamiento ua ON
+    ua.id = ep.id_unidad_almacenamiento
 LEFT JOIN entrada_producto_ubicacion epu ON
 	ep.id = epu.id_entrada_producto
 having count(ep.id) - count(epu.id) != 0 ) u ON
@@ -280,7 +280,7 @@ Operacion.entrada_productoLstBy = function(id_entrada, callback) {
      ep.id Id_entrada_producto
 	,e.producto Producto
 	,ar.nombre Rotacion
-	,pf.nombre Formato
+	,ua.nombre UAlm
 	,ep.folio Folio
 	,ep.cajas Cajas
     ,ep.piezas Piezas
@@ -288,8 +288,8 @@ Operacion.entrada_productoLstBy = function(id_entrada, callback) {
 FROM entrada_producto ep
 JOIN entrada e ON
 	e.id = ep.id_entrada
-JOIN producto_formato pf ON
-	pf.id = ep.id_producto_formato
+JOIN unidad_almacenamiento ua ON
+	ua.id = ep.id_unidad_almacenamiento
 JOIN almacen_rotacion ar ON
 	ar.id = ep.id_almacen_rotacion
 LEFT JOIN entrada_producto_ubicacion epu ON
@@ -380,21 +380,21 @@ Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrad
         ep.id_entrada Id_entrada
        ,ep.id Id_entrada_producto
        ,ep.folio Folio
-       ,pm.nombre Metodo
-       ,pf.nombre Formato
+       ,am.nombre Metodo
+       ,ua.nombre Formato
        ,ep.cajas Cajas
        ,ep.piezas Piezas
    FROM 
    entrada_producto ep
    JOIN entrada_producto_ubicacion epu ON
        epu.id_entrada_producto = ep.id
-   JOIN almacen_movimiento am ON
-       am.id = epu.id_almacen_movimiento
-       and am.id_grupo = ?
-   JOIN producto_metodo pm ON
-       pm.id = ep.id_producto_metodo
-   JOIN producto_formato pf ON
-       pf.id = ep.id_producto_formato
+   JOIN almacen_movimiento amov ON
+       amov.id = epu.id_almacen_movimiento
+       and amov.id_grupo = ?
+   JOIN almacen_metodo am ON
+       am.id = ep.id_unidad_almacenamiento
+   JOIN unidad_almacenamiento ua ON
+       ua.id = ep.id_unidad_almacenamiento
    WHERE ep.id_entrada = ?;
         `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
             callback(data);
