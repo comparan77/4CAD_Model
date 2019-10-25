@@ -170,7 +170,7 @@ Operacion.getAsnRecepcionCortinaById= function(id, callback) {
                 c.nombre cliente,
                 v.nombre vendor,
                 vm.nombre producto,
-                a.bulto_declarado,
+                a.caja_declarada,
                 a.pieza_declarada,
                 a.operador,
                 a.sello,
