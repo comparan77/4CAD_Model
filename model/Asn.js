@@ -5,12 +5,9 @@ function Asn() {
 	this.Id_almacen = null;
 	this.Fecha_arribo = null;
 	this.Hora_arribo = null;
-	this.Id_vendor_producto = null;
-	this.Tarima_declarada = null;
-	this.Caja_declarada = null;
-	this.Pieza_declarada = null;
 	this.Operador = null;
 	this.Sello = null;
+	this.Sello_c_w_ma = null;
 	this.Id_transporte_linea = null;
 	this.Id_transporte_tipo = null;
 	this.Placa = null;

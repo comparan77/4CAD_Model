@@ -49,6 +49,9 @@ var DocumentoMng = require('./DocumentoMng.js');
 var Asn = require('./Asn.js');
 var AsnMng = require('./AsnMng.js');
 
+var Asn_producto = require('./Asn_producto.js');
+var Asn_productoMng = require('./Asn_productoMng.js');
+
 var Asn_documento = require('./Asn_documento.js');
 var Asn_documentoMng = require('./Asn_documentoMng.js');
 
@@ -99,6 +102,8 @@ function Factory() {
             o = new Transporte_linea_tipo();
         } else if (type === "Asn") {
             o = new Asn();
+        } else if (type === "Asn_producto") {
+            o = new Asn_producto();
         } else if (type === "Asn_documento") {
             o = new Asn_documento();
         } else if (type === "Entrada") {
@@ -150,6 +155,8 @@ function Factory() {
             oMng = new Transporte_linea_tipoMng(o)
         } else if (o.type === "Asn") {
             oMng = new AsnMng(o)
+        } else if (o.type === "Asn_producto") {
+            oMng = new Asn_productoMng(o)
         } else if (o.type === "Asn_documento") {
             oMng = new Asn_documentoMng(o)
         } else if (o.type === "Entrada") {

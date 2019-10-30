@@ -47,7 +47,7 @@ Operacion.getFolioByTipo = function(tipo, callback) {
 
 // Asn 
 // Add
-Operacion.asnAdd = function(obj, callback) {
+Operacion.asn_Add = function(obj, callback) {
 
     var factory = new Factory();
     var oAsn = factory.CreateObj('Asn');
@@ -62,19 +62,28 @@ Operacion.asnAdd = function(obj, callback) {
         
         oAsn.Folio = folio;
         TableMng.Action(pool, oAsnMng, 'add', (data) => {
-            var lstDoc = [];
-            obj.lstDoc.forEach(doc => {
-                var oAsn_doc = factory.CreateObj('Asn_documento');
-                Object.keys(doc).forEach(item => {
-                    if(oAsn_doc.hasOwnProperty(item))
-                        oAsn_doc[item] = doc[item];
+
+            obj.Producto.Id_asn = oAsn.Id;
+            Operacion.asn_producto_Add(obj.Producto, () => {
+                
+                // Inicio
+                var lstDoc = [];
+                obj.lstDoc.forEach(doc => {
+                    var oAsn_doc = factory.CreateObj('Asn_documento');
+                    Object.keys(doc).forEach(item => {
+                        if(oAsn_doc.hasOwnProperty(item))
+                            oAsn_doc[item] = doc[item];
+                    });
+                    oAsn_doc.Id_asn = data[0].id;
+                    lstDoc.push(oAsn_doc);
                 });
-                oAsn_doc.Id_asn = data[0].id;
-                lstDoc.push(oAsn_doc);
-            });
-            Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
-                callback();
-            });
+                Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+                    callback();
+                });
+                // Fin
+
+            })
+
         });
 
     });
@@ -202,6 +211,19 @@ Operacion.getAsnRecepcionCortinaById= function(id, callback) {
             callback(data);
         });
     }));
+}
+
+// Asn_producto
+// Add
+Operacion.asn_producto_Add = function(obj, callback) {
+    var factory = new Factory();
+    var oAP = factory.CreateObj('Asn_producto');
+    var oAP_Mng = factory.CreateMng(oAP);
+    
+    TableMng.cloneObj(oAP, obj);
+    TableMng.Action(pool, oAP_Mng, 'add', () => {
+        if(callback) callback();
+    })
 }
 
 // Asn_documento

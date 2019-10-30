@@ -1,28 +1,36 @@
 function TableMng() { };
 
-TableMng.fillObj = function(objMng, row) {
-    Object.keys(row).forEach(item => {
-        if(objMng.obj.hasOwnProperty(item)) {
-            objMng.obj[item] = row[item];
+// TableMng.fillObj = function(objMng, row) {
+//     Object.keys(row).forEach(item => {
+//         if(objMng.obj.hasOwnProperty(item)) {
+//             objMng.obj[item] = row[item];
+//         }
+//     });
+// }
+
+TableMng.cloneObj = function(clon, obj) {
+    Object.keys(obj).forEach(item => {
+        if(clon.hasOwnProperty(item)) {
+            clon[item] = obj[item];
         }
     });
 }
 
-TableMng.Execute = function(pool, sql, values, callback, tran = null) {
+TableMng.Execute = function(pool, sql, values, callback) {
     pool.query(sql, values, function(err, res, fields) {
         if(err) throw err;
         if(callback) callback(res);
     });
 }
 
-TableMng.SelectBy = function(pool, objMng, condition, values, callback, tran = null) {
+TableMng.SelectBy = function(pool, objMng, condition, values, callback) {
     pool.query(objMng.QrySelBy + condition, values, function(err, res, fields) {
         if(err) throw err;
         switch (res.length) {
             case 0:
                 break;
             case 1:
-                TableMng.fillObj(objMng, res[0]);
+                TableMng.cloneObj(objMng.obj, res[0]);
                 break;
             default:
                 break;
@@ -31,7 +39,7 @@ TableMng.SelectBy = function(pool, objMng, condition, values, callback, tran = n
     });
 }
 
-TableMng.Action = function(pool, objMng, action, callback, tran = null) {
+TableMng.Action = function(pool, objMng, action, callback) {
     var _ = this;
     var opcion = 0;
     switch (action) {
@@ -62,7 +70,7 @@ TableMng.Action = function(pool, objMng, action, callback, tran = null) {
         var data;
         switch (action) {
             case 'get':
-                TableMng.fillObj(objMng, res[0][0]);
+                TableMng.cloneObj(objMng.obj, res[0][0]);
                 data = res[0];
                 break;
             case 'add':
