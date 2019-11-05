@@ -95,6 +95,8 @@ Operacion.asnShare_Add = function(obj, callback) {
                 
         // Inicio
         var lstDoc = [];
+        if(obj.lstDoc.length > 0)
+            var factory = new Factory();
         obj.lstDoc.forEach(doc => {
             var oAsn_doc = factory.CreateObj('Asn_documento');
             Object.keys(doc).forEach(item => {
