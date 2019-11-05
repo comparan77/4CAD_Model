@@ -63,7 +63,10 @@ app.get('/asn_rec_cortina_id/:id', (req, res) => {
 app.get('/recibidos', (req, res) => {
   Operacion.recibidosGet((data) => res.send(JSON.stringify(data)));
 })
-
+// Revision de sello
+app.get('/asn_selloSearch/:sello', (req, res) => {
+  Operacion.asnSelloSearch(req.params.sello, (data) => res.send(JSON.stringify(data)))
+})
 
 // Operacion
 // Get
@@ -80,6 +83,12 @@ app.get('/productos_ubicados/:gpo/key/:key', (req, res) => {
 // Post
 app.post('/asn', (req, res) => {
   Operacion.asn_Add(req.body, () => {
+    res.send('Ready');
+  });
+});
+
+app.post('/asn_share', (req, res) => {
+  Operacion.asnShare_Add(req.body, () => {
     res.send('Ready');
   });
 });

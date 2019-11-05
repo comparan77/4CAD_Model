@@ -13,7 +13,7 @@ function AsnMng (o, lst = null) {
 		Hora_arribo: '',
 		Operador: '',
 		Sello: '',
-		Sello_c_w_ma: '',
+		Sello_cte_dt: '',
 		Id_transporte_linea: 0,
 		Id_transporte_tipo: 0,
 		Placa: '',
@@ -22,7 +22,7 @@ function AsnMng (o, lst = null) {
 		Cont_2: '',
 	}
 
-	this.QrySelBy = 'select Id, Folio, Id_cliente, Id_almacen, Fecha_arribo, Hora_arribo, Operador, Sello, Sello_c_w_ma, Id_transporte_linea, Id_transporte_tipo, Placa, Caja, Cont_1, Cont_2 FROM asn WHERE ';
+	this.QrySelBy = 'select Id, Folio, Id_cliente, Id_almacen, Fecha_arribo, Hora_arribo, Operador, Sello, Sello_cte_dt, Id_transporte_linea, Id_transporte_tipo, Placa, Caja, Cont_1, Cont_2 FROM asn WHERE ';
 
 };
 AsnMng.prototype = Object.create(BaseMng.prototype);
@@ -37,7 +37,7 @@ AsnMng.prototype.fillParameters = function(option) {
 	this.Params.Hora_arribo = this.obj.Hora_arribo == null ? this.Params.Hora_arribo : this.obj.Hora_arribo;
 	this.Params.Operador = this.obj.Operador == null ? this.Params.Operador : this.obj.Operador;
 	this.Params.Sello = this.obj.Sello == null ? this.Params.Sello : this.obj.Sello;
-	this.Params.Sello_c_w_ma = this.obj.Sello_c_w_ma == null ? this.Params.Sello_c_w_ma : this.obj.Sello_c_w_ma;
+	this.Params.Sello_cte_dt = this.obj.Sello_cte_dt == null ? this.Params.Sello_cte_dt : this.obj.Sello_cte_dt;
 	this.Params.Id_transporte_linea = this.obj.Id_transporte_linea == null ? this.Params.Id_transporte_linea : this.obj.Id_transporte_linea;
 	this.Params.Id_transporte_tipo = this.obj.Id_transporte_tipo == null ? this.Params.Id_transporte_tipo : this.obj.Id_transporte_tipo;
 	this.Params.Placa = this.obj.Placa == null ? this.Params.Placa : this.obj.Placa;

@@ -7,7 +7,7 @@ function Asn() {
 	this.Hora_arribo = null;
 	this.Operador = null;
 	this.Sello = null;
-	this.Sello_c_w_ma = null;
+	this.Sello_cte_dt = null;
 	this.Id_transporte_linea = null;
 	this.Id_transporte_tipo = null;
 	this.Placa = null;

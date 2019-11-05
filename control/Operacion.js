@@ -89,6 +89,48 @@ Operacion.asn_Add = function(obj, callback) {
     });
 }
 
+// Asn Compartida
+Operacion.asnShare_Add = function(obj, callback) {
+    Operacion.asn_producto_Add(obj.Producto, () => {
+                
+        // Inicio
+        var lstDoc = [];
+        obj.lstDoc.forEach(doc => {
+            var oAsn_doc = factory.CreateObj('Asn_documento');
+            Object.keys(doc).forEach(item => {
+                if(oAsn_doc.hasOwnProperty(item))
+                    oAsn_doc[item] = doc[item];
+            });
+            lstDoc.push(oAsn_doc);
+        });
+        Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+            callback();
+        });
+        // Fin
+
+    })
+
+}
+
+Operacion.asnSelloSearch = function(sello, callback) {
+    var factory = new Factory();
+    var oAsn = factory.CreateObj('Asn');
+    var oAsnMng = factory.CreateMng(oAsn);
+
+    TableMng.SelectBy(pool, oAsnMng, 'sello_cte_dt = ?', sello, (res)=> {
+        if(oAsn.Id > 0) {
+            var oAsnDoc = factory.CreateObj('Asn_documento');
+            var oAsnDocMng = factory.CreateMng(oAsnDoc);
+            TableMng.SelectBy(pool, oAsnDocMng, 'id_asn = ?', oAsn.Id, (res)=> {
+                oAsn.Documento = res;
+                callback(oAsn);
+            })
+        }
+        else
+            callback(res);
+    });
+}
+
 // Entrada
 Operacion.entradaAdd = function(obj, callback) {
     var factory = new Factory();
