@@ -1,5 +1,6 @@
 var Catalogo = require('./control/Catalogo.js')
 var Operacion = require('./control/Operacion.js')
+var Recepcion = require('./control/Recepcion.js')
 
 var Common = require('../common/Common.js');
 
@@ -103,6 +104,13 @@ app.post('/entrada', (req, res) => {
 // Ubica recibidos
 app.put('/recibidos_ubica/', (req, res) => {
   Operacion.recibidosUbica(req.body.id_entrada_producto, req.body.id_almacen_movimiento, (data) => res.send(JSON.stringify(data)));
+})
+
+// Recepción
+app.get('/asn_producto_detalle_by_cte/:key', (req, res) => {
+  Recepcion.asn_producto_detalle_by_cte(req.params.key, (data) => {
+    res.send(JSON.stringify(data));
+  })
 })
 
 // Para catalogos

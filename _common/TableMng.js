@@ -16,10 +16,13 @@ TableMng.cloneObj = function(clon, obj) {
     });
 }
 
-TableMng.Execute = function(pool, sql, values, callback) {
+TableMng.Execute = function(pool, sql, values, callback, callerr) {
     pool.query(sql, values, function(err, res, fields) {
-        if(err) throw err;
-        if(callback) callback(res);
+        if(err) {
+            if(callerr) callerr(err);
+            else throw err;
+        }
+        else if(callback) callback(res);
     });
 }
 
