@@ -257,34 +257,6 @@ Operacion.getAsnRecepcionCortinaById= function(id, callback) {
     }));
 }
 
-// Asn_producto
-// Add
-Operacion.asn_producto_Add = function(obj, callback) {
-    var factory = new Factory();
-    var oAP = factory.CreateObj('Asn_producto');
-    var oAP_Mng = factory.CreateMng(oAP);
-    
-    TableMng.cloneObj(oAP, obj);
-    TableMng.Action(pool, oAP_Mng, 'add', () => {
-        if(callback) callback();
-    })
-}
-
-// Asn_documento
-// Add
-Operacion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {
-    var factory = new Factory();
-    var oAsn_doc = lstAsnDoc[indice];
-    if(oAsn_doc) {
-        var oAsn_docMng = factory.CreateMng(oAsn_doc);
-        indice++;
-        TableMng.Action(pool, oAsn_docMng, 'add', (data) => {
-            Operacion.addLstAsnDoc(lstAsnDoc, indice, callback);
-        });
-    }
-    else
-        callback();
-}
 // Select by Asn
 Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
     var factory = new Factory();

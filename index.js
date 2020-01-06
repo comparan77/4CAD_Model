@@ -83,13 +83,13 @@ app.get('/productos_ubicados/:gpo/key/:key', (req, res) => {
 
 // Post
 app.post('/asn', (req, res) => {
-  Operacion.asn_Add(req.body, () => {
+  Recepcion.asn_Add(req.body, () => {
     res.send('Ready');
   });
 });
 
 app.post('/asn_share', (req, res) => {
-  Operacion.asnShare_Add(req.body, () => {
+  Recepcion.asnShare_Add(req.body, () => {
     res.send('Ready');
   });
 });
