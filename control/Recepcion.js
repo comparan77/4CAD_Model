@@ -1,5 +1,5 @@
+const path = require('path');
 var Operacion = require('./control/Operacion.js')
-
 var pool = require('../_common/db.js');
 var Catalogo = require('./Catalogo.js')
 var TableMng = require('../_common/TableMng.js');
@@ -47,10 +47,13 @@ Recepcion.asn_Add = function(obj, callback) {
                     oAsn_doc.Id_asn = data[0].id;
                     lstDoc.push(oAsn_doc);
                 });
-                Recepcion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+                Recepcion.AsnLstDocAdd(lstDoc, 0, callback, ()=> {
                     //Agregar producto detalle para las cuentas configuradas
                     if(obj.Producto.Csv_file_detail_prod.name!='') {
                         //Insertar detalle de productos de la cuenta configurada
+                        Recepcion.productoDetalleAdd(obj.Producto.Csv_file_detail_prod.name, oAsn.Id_cliente, obj.Producto.head, oAsn.Id, ()=> {
+                            callback();    
+                        } )
                     } else {
                         callback();
                     }
@@ -81,7 +84,7 @@ Recepcion.asnShare_Add = function(obj, callback) {
             });
             lstDoc.push(oAsn_doc);
         });
-        Recepcion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+        Recepcion.AsnLstDocAdd(lstDoc, 0, callback, ()=> {
             callback();
         });
         // Fin
@@ -104,18 +107,50 @@ Recepcion.asn_producto_Add = function(obj, callback) {
 
 // Asn_documento
 // Add
-Recepcion.addLstAsnDoc = function(lstAsnDoc, indice, callback, tran = null) {
+Recepcion.AsnLstDocAdd = function(lstAsnDoc, indice, callback, tran = null) {
     var factory = new Factory();
     var oAsn_doc = lstAsnDoc[indice];
     if(oAsn_doc) {
         var oAsn_docMng = factory.CreateMng(oAsn_doc);
         indice++;
         TableMng.Action(pool, oAsn_docMng, 'add', (data) => {
-            Recepcion.addLstAsnDoc(lstAsnDoc, indice, callback);
+            Recepcion.AsnLstDocAdd(lstAsnDoc, indice, callback);
         });
     }
     else
         callback();
+}
+
+Recepcion.productoDetalleAdd = function(fileName, id_cliente, header, id_asn_producto, callback, tran = null) {
+
+    var filePathProdDet = path.format({
+        root: '/ignored',
+        dir: __dirname,
+        base: fileName
+    });
+
+    var tblName = 'asn_producto_detalle_' + id_cliente;
+
+    var colNames = '(';
+
+    for(h in header) {
+        colNames = header[h];
+        if(h < header.length)
+            colNames += ','
+    }
+    
+    var qry = `LOAD DATA LOCAL INFILE` + filePathProdDet + `
+    INTO TABLE ` + tblName + `
+    FIELDS TERMINATED BY ',' 
+    OPTIONALLY ENCLOSED BY '"' 
+    LINES TERMINATED BY '\r\n' ')
+    IGNORE 1 LINES 
+    ` + colNames + `
+    SET id_asn_producto = ?;`;
+
+    console.log(qry);
+    callback();
+    //TableMng.Execute(pool, qry, id_asn_producto, callback, null);
 }
 
 module.exports = Recepcion;
