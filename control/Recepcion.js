@@ -1,5 +1,3 @@
-//Pendiente asn compartida para la tabla asn_producto_detalle como en la linea 55
-
 var Operacion = require('./Operacion.js')
 var pool = require('../_common/db.js');
 var Catalogo = require('./Catalogo.js')
@@ -86,7 +84,15 @@ Recepcion.asnShare_Add = function(obj, callback) {
             lstDoc.push(oAsn_doc);
         });
         Recepcion.AsnLstDocAdd(lstDoc, 0, ()=> {
-            callback();
+            //Agregar producto detalle para las cuentas configuradas
+            if(obj.Producto.Csv_file_detail_prod.name!='') {
+                //Insertar detalle de productos de la cuenta configurada
+                Recepcion.productoDetalleAdd(obj.Producto.Csv_file_detail_prod.name, oAsn.Id_cliente, obj.Producto.Csv_file_detail_prod.head, oAP.Id, ()=> {
+                    callback();    
+                } )
+            } else {
+                callback();
+            }
         });
         // Fin
 
