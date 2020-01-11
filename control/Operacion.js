@@ -45,93 +45,93 @@ Operacion.getFolioByTipo = function(tipo, callback) {
     
 }
 
-// Asn 
-// Add
-Operacion.asn_Add = function(obj, callback) {
+// // Asn 
+// // Add
+// Operacion.asn_Add = function(obj, callback) {
 
-    var factory = new Factory();
-    var oAsn = factory.CreateObj('Asn');
+//     var factory = new Factory();
+//     var oAsn = factory.CreateObj('Asn');
 
-    Object.keys(obj).forEach(item => {
-        if(oAsn.hasOwnProperty(item))
-            oAsn[item] = obj[item];
-    });
-    var oAsnMng = factory.CreateMng(oAsn);
+//     Object.keys(obj).forEach(item => {
+//         if(oAsn.hasOwnProperty(item))
+//             oAsn[item] = obj[item];
+//     });
+//     var oAsnMng = factory.CreateMng(oAsn);
 
-    Operacion.getFolioByTipo('ASN', (folio) => {
+//     Operacion.getFolioByTipo('ASN', (folio) => {
         
-        oAsn.Folio = folio;
-        TableMng.Action(pool, oAsnMng, 'add', (data) => {
+//         oAsn.Folio = folio;
+//         TableMng.Action(pool, oAsnMng, 'add', (data) => {
 
-            obj.Producto.Id_asn = oAsn.Id;
-            Operacion.asn_producto_Add(obj.Producto, () => {
+//             obj.Producto.Id_asn = oAsn.Id;
+//             Operacion.asn_producto_Add(obj.Producto, () => {
                 
-                // Inicio
-                var lstDoc = [];
-                obj.lstDoc.forEach(doc => {
-                    var oAsn_doc = factory.CreateObj('Asn_documento');
-                    Object.keys(doc).forEach(item => {
-                        if(oAsn_doc.hasOwnProperty(item))
-                            oAsn_doc[item] = doc[item];
-                    });
-                    oAsn_doc.Id_asn = data[0].id;
-                    lstDoc.push(oAsn_doc);
-                });
-                Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
-                    callback();
-                });
-                // Fin
+//                 // Inicio
+//                 var lstDoc = [];
+//                 obj.lstDoc.forEach(doc => {
+//                     var oAsn_doc = factory.CreateObj('Asn_documento');
+//                     Object.keys(doc).forEach(item => {
+//                         if(oAsn_doc.hasOwnProperty(item))
+//                             oAsn_doc[item] = doc[item];
+//                     });
+//                     oAsn_doc.Id_asn = data[0].id;
+//                     lstDoc.push(oAsn_doc);
+//                 });
+//                 Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+//                     callback();
+//                 });
+//                 // Fin
 
-            })
+//             })
 
-        });
+//         });
 
-    });
-}
+//     });
+// }
 
-// Asn Compartida
-Operacion.asnShare_Add = function(obj, callback) {
-    Operacion.asn_producto_Add(obj.Producto, () => {
+// // Asn Compartida
+// Operacion.asnShare_Add = function(obj, callback) {
+//     Operacion.asn_producto_Add(obj.Producto, () => {
                 
-        // Inicio
-        var lstDoc = [];
-        if(obj.lstDoc.length > 0)
-            var factory = new Factory();
-        obj.lstDoc.forEach(doc => {
-            var oAsn_doc = factory.CreateObj('Asn_documento');
-            Object.keys(doc).forEach(item => {
-                if(oAsn_doc.hasOwnProperty(item))
-                    oAsn_doc[item] = doc[item];
-            });
-            lstDoc.push(oAsn_doc);
-        });
-        Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
-            callback();
-        });
-        // Fin
+//         // Inicio
+//         var lstDoc = [];
+//         if(obj.lstDoc.length > 0)
+//             var factory = new Factory();
+//         obj.lstDoc.forEach(doc => {
+//             var oAsn_doc = factory.CreateObj('Asn_documento');
+//             Object.keys(doc).forEach(item => {
+//                 if(oAsn_doc.hasOwnProperty(item))
+//                     oAsn_doc[item] = doc[item];
+//             });
+//             lstDoc.push(oAsn_doc);
+//         });
+//         Operacion.addLstAsnDoc(lstDoc, 0, callback, ()=> {
+//             callback();
+//         });
+//         // Fin
 
-    })
+//     })
 
-}
+// }
 
-Operacion.asnSelloSearch = function(sello, callback) {
-    var factory = new Factory();
-    var oAsn = factory.CreateObj('Asn');
-    var oAsnMng = factory.CreateMng(oAsn);
+// Operacion.asnSelloSearch = function(sello, callback) {
+//     var factory = new Factory();
+//     var oAsn = factory.CreateObj('Asn');
+//     var oAsnMng = factory.CreateMng(oAsn);
 
-    TableMng.SelectBy(pool, oAsnMng, 'sello_cte_dt = ?', sello, (res)=> {
-        if(oAsn.Id > 0) {
-            var oAsnDoc = factory.CreateObj('Asn_documento');
-            var oAsnDocMng = factory.CreateMng(oAsnDoc);
-            TableMng.SelectBy(pool, oAsnDocMng, 'id_asn = ?', oAsn.Id, (res)=> {
-                oAsn.Documento = res;
-                callback(oAsn);
-            })
-        }
-        else
-            callback(res);
-    });
-}
+//     TableMng.SelectBy(pool, oAsnMng, 'sello_cte_dt = ?', sello, (res)=> {
+//         if(oAsn.Id > 0) {
+//             var oAsnDoc = factory.CreateObj('Asn_documento');
+//             var oAsnDocMng = factory.CreateMng(oAsnDoc);
+//             TableMng.SelectBy(pool, oAsnDocMng, 'id_asn = ?', oAsn.Id, (res)=> {
+//                 oAsn.Documento = res;
+//                 callback(oAsn);
+//             })
+//         }
+//         else
+//             callback(res);
+//     });
+// }
 
 // Entrada
 Operacion.entradaAdd = function(obj, callback) {
@@ -154,163 +154,163 @@ Operacion.entradaAdd = function(obj, callback) {
     });
 }
 
-// Schedule
-Operacion.getAsnSchedule = function(callback) {
-    TableMng.Execute(pool, `select a.id, a.folio title, c.nombre cliente, 
-                                concat(a.fecha_arribo, "T", a.hora_arribo) start, 
-                                tt.nombre transporte
-                            from asn a join cliente c 
-                                on c.id = a.id_cliente 
-                            join transporte_tipo tt 
-                                on tt.id = a.id_transporte_tipo;`, 
-                                null, (data => {
-        callback(data);
-    }));    
-}
+// // Schedule
+// Operacion.getAsnSchedule = function(callback) {
+//     TableMng.Execute(pool, `select a.id, a.folio title, c.nombre cliente, 
+//                                 concat(a.fecha_arribo, "T", a.hora_arribo) start, 
+//                                 tt.nombre transporte
+//                             from asn a join cliente c 
+//                                 on c.id = a.id_cliente 
+//                             join transporte_tipo tt 
+//                                 on tt.id = a.id_transporte_tipo;`, 
+//                                 null, (data => {
+//         callback(data);
+//     }));    
+// }
 
-Operacion.getAsnScheduleByCliente = function(cliente, callback) {
-    TableMng.Execute(pool, `select a.id, a.folio title, c.nombre cliente, 
-                                concat(a.fecha_arribo, "T", a.hora_arribo) start, 
-                                tt.nombre transporte
-                            from asn a join cliente c 
-                                on c.id = a.id_cliente 
-                                and c.id = ?
-                            join transporte_tipo tt 
-                                on tt.id = a.id_transporte_tipo;`, 
-                                cliente, (data => {
-        callback(data);
-    }));    
-}
+// Operacion.getAsnScheduleByCliente = function(cliente, callback) {
+//     TableMng.Execute(pool, `select a.id, a.folio title, c.nombre cliente, 
+//                                 concat(a.fecha_arribo, "T", a.hora_arribo) start, 
+//                                 tt.nombre transporte
+//                             from asn a join cliente c 
+//                                 on c.id = a.id_cliente 
+//                                 and c.id = ?
+//                             join transporte_tipo tt 
+//                                 on tt.id = a.id_transporte_tipo;`, 
+//                                 cliente, (data => {
+//         callback(data);
+//     }));    
+// }
 
-// Cortinas con recepcion
-Operacion.getAsnRecepcionCortina = function(callback) {
-    TableMng.Execute(pool, `select a.nombre almacen, c.id_almacen, count(c.id) cortinas, 
-    count(ar.id) operacion from cortina c join almacen a on a.id = c.id_almacen  
-    left join asn_recepcion ar 
-    on ar.id_cortina = c.id and ar.en_operacion = 1
-    group by c.id_almacen;`, null, (data => {
-        callback(data);
-    }))
-}
+// // Cortinas con recepcion
+// Operacion.getAsnRecepcionCortina = function(callback) {
+//     TableMng.Execute(pool, `select a.nombre almacen, c.id_almacen, count(c.id) cortinas, 
+//     count(ar.id) operacion from cortina c join almacen a on a.id = c.id_almacen  
+//     left join asn_recepcion ar 
+//     on ar.id_cortina = c.id and ar.en_operacion = 1
+//     group by c.id_almacen;`, null, (data => {
+//         callback(data);
+//     }))
+// }
 
-Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
-    TableMng.Execute(pool, `select
-                    a.nombre almacen
-                    ,c.nombre cortina
-                    ,c.id id_cortina
-                    , COALESCE(asn_r.id, 0) asn_r_id 
-                    , COALESCE(asn.folio, '') a_folio
-                from cortina c
-                join almacen a on 
-                    c.id_almacen = a.id
-                    and a.id = ?
-                left join asn_recepcion asn_r on
-                    asn_r.id_cortina = c.id
-                    and asn_r.en_operacion = 1
-                left join asn asn on
-                    asn.id = asn_r.id_asn
-                order by c.id;`, 
-                                almacen, (data => {
-        callback(data);
-    }));
-}
+// Operacion.getAsnRecepcionCortinaByAlmacen = function(almacen, callback) {
+//     TableMng.Execute(pool, `select
+//                     a.nombre almacen
+//                     ,c.nombre cortina
+//                     ,c.id id_cortina
+//                     , COALESCE(asn_r.id, 0) asn_r_id 
+//                     , COALESCE(asn.folio, '') a_folio
+//                 from cortina c
+//                 join almacen a on 
+//                     c.id_almacen = a.id
+//                     and a.id = ?
+//                 left join asn_recepcion asn_r on
+//                     asn_r.id_cortina = c.id
+//                     and asn_r.en_operacion = 1
+//                 left join asn asn on
+//                     asn.id = asn_r.id_asn
+//                 order by c.id;`, 
+//                                 almacen, (data => {
+//         callback(data);
+//     }));
+// }
 
-Operacion.getAsnRecepcionCortinaById= function(id, callback) {
+// Operacion.getAsnRecepcionCortinaById= function(id, callback) {
 
-    TableMng.Execute(pool, `select
-                a.id id_asn,
-                a.folio,
-                c.nombre cliente,
-                v.nombre vendor,
-                vm.nombre producto,
-                a.caja_declarada,
-                a.pieza_declarada,
-                a.operador,
-                a.sello,
-                tl.nombre linea,
-                tt.nombre tipo,
-                a.placa,
-                a.caja,
-                a.cont_1,
-                a.cont_2,
-                asn_r.fecha_recepcion,
-                asn_r.hora_recepcion
-            from asn_recepcion asn_r
-            join asn a on 
-                a.id = asn_r.id_asn
-            join cliente c on
-                c.id = a.id_cliente
-            join vendor_producto vm on
-                vm.id = a.id_vendor_producto
-            join vendor v on	
-                v.id = vm.id_vendor
-            join transporte_linea tl on
-                tl.id = a.id_transporte_linea
-            join transporte_tipo tt on
-                tt.id = a.id_transporte_tipo
-            where asn_r.id = ?;`, 
-                                id, (data => {
-        Operacion.SltByAsnDoc(data[0].id_asn, (res) => {
-            data[0].lstDoc = res;
-            callback(data);
-        });
-    }));
-}
+//     TableMng.Execute(pool, `select
+//                 a.id id_asn,
+//                 a.folio,
+//                 c.nombre cliente,
+//                 v.nombre vendor,
+//                 vm.nombre producto,
+//                 a.caja_declarada,
+//                 a.pieza_declarada,
+//                 a.operador,
+//                 a.sello,
+//                 tl.nombre linea,
+//                 tt.nombre tipo,
+//                 a.placa,
+//                 a.caja,
+//                 a.cont_1,
+//                 a.cont_2,
+//                 asn_r.fecha_recepcion,
+//                 asn_r.hora_recepcion
+//             from asn_recepcion asn_r
+//             join asn a on 
+//                 a.id = asn_r.id_asn
+//             join cliente c on
+//                 c.id = a.id_cliente
+//             join vendor_producto vm on
+//                 vm.id = a.id_vendor_producto
+//             join vendor v on	
+//                 v.id = vm.id_vendor
+//             join transporte_linea tl on
+//                 tl.id = a.id_transporte_linea
+//             join transporte_tipo tt on
+//                 tt.id = a.id_transporte_tipo
+//             where asn_r.id = ?;`, 
+//                                 id, (data => {
+//         Operacion.SltByAsnDoc(data[0].id_asn, (res) => {
+//             data[0].lstDoc = res;
+//             callback(data);
+//         });
+//     }));
+// }
 
-// Select by Asn
-Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
-    var factory = new Factory();
-    var oAsn_doc = factory.CreateObj('Asn_documento');
-    var oAsn_docMng = factory.CreateMng(oAsn_doc);
+// // Select by Asn
+// Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
+//     var factory = new Factory();
+//     var oAsn_doc = factory.CreateObj('Asn_documento');
+//     var oAsn_docMng = factory.CreateMng(oAsn_doc);
     
-    TableMng.SelectBy(pool, oAsn_docMng, `id_asn = ?`, id_asn, (res) => {
-        Catalogo.lstCatalogo('Documento', (data) => {
-            for(i in res) {
-                var doc = data.find((obj) => {
-                    return obj.Id == res[i].Id_documento;
-                });
-                res[i].Documento = doc.Nombre;
-            }
-            if(callback) callback(res);
-        });
+//     TableMng.SelectBy(pool, oAsn_docMng, `id_asn = ?`, id_asn, (res) => {
+//         Catalogo.lstCatalogo('Documento', (data) => {
+//             for(i in res) {
+//                 var doc = data.find((obj) => {
+//                     return obj.Id == res[i].Id_documento;
+//                 });
+//                 res[i].Documento = doc.Nombre;
+//             }
+//             if(callback) callback(res);
+//         });
         
-    });
-}
+//     });
+// }
 
 // Recibidos
-Operacion.recibidosGet = function(callback) {
-    TableMng.Execute(pool, 
-        `
-SELECT 
-	e.Id Id_entrada
-    ,e.folio Folio
-    ,e.cliente Cliente
-    ,e.producto Producto
-    ,u.u_a UAlm
-    ,u.todos Cantidad
-	,u.ubicados Ubicados
-	,u.pendientes Pendientes
-FROM
-	entrada e
-JOIN (
+// Operacion.recibidosGet = function(callback) {
+//     TableMng.Execute(pool, 
+//         `
+// SELECT 
+// 	e.Id Id_entrada
+//     ,e.folio Folio
+//     ,e.cliente Cliente
+//     ,e.producto Producto
+//     ,u.u_a UAlm
+//     ,u.todos Cantidad
+// 	,u.ubicados Ubicados
+// 	,u.pendientes Pendientes
+// FROM
+// 	entrada e
+// JOIN (
 	
-SELECT
-	 ep.id_entrada
-	,ua.nombre u_a
-	,count(ep.id) todos
-	,count(epu.id) ubicados
-	,count(ep.id) - count(epu.id) pendientes
-FROM entrada_producto ep 
-JOIN unidad_almacenamiento ua ON
-    ua.id = ep.id_unidad_almacenamiento
-LEFT JOIN entrada_producto_ubicacion epu ON
-	ep.id = epu.id_entrada_producto
-having count(ep.id) - count(epu.id) != 0 ) u ON
-	u.id_entrada = e.id;
-        `, '', (data) => {
-            callback(data);
-        })
-}
+// SELECT
+// 	 ep.id_entrada
+// 	,ua.nombre u_a
+// 	,count(ep.id) todos
+// 	,count(epu.id) ubicados
+// 	,count(ep.id) - count(epu.id) pendientes
+// FROM entrada_producto ep 
+// JOIN unidad_almacenamiento ua ON
+//     ua.id = ep.id_unidad_almacenamiento
+// LEFT JOIN entrada_producto_ubicacion epu ON
+// 	ep.id = epu.id_entrada_producto
+// having count(ep.id) - count(epu.id) != 0 ) u ON
+// 	u.id_entrada = e.id;
+//         `, '', (data) => {
+//             callback(data);
+//         })
+// }
 
 Operacion.entrada_productoLstBy = function(id_entrada, callback) {
     
@@ -369,48 +369,48 @@ Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, 
     })
 }
 
-Operacion.ubicadosGet = function(id_almacen_movimiento_grupo, callback) {
-    TableMng.Execute(pool, 
-        `
-SELECT DISTINCT
-     c.nombre Cliente
-    ,e.id Id_entrada
-    ,e.folio Folio
-    ,COALESCE(rf.Referencia, '') Referencias
-FROM entrada_producto_ubicacion epu 
-JOIN entrada e ON
-    e.id = epu.id_entrada
-JOIN asn a ON
-    e.id_asn = a.id
-JOIN cliente c ON
-    c.id = a.id_cliente
-JOIN almacen_movimiento am ON
-    am.id = epu.id_almacen_movimiento
-    and am.id_grupo = ?
-LEFT JOIN asn_documento ad ON
-    ad.id_asn = a.id
-LEFT JOIN documento d ON
-    d.id = ad.id_documento
-LEFT JOIN (
-    SELECT 
-        tbl.Id_asn Id_asn
-        ,GROUP_CONCAT(tbl.Referencia separator ', ') Referencia
-    FROM (
-    SELECT
-        a.id Id_asn
-        ,CONCAT(d.nombre, ':', GROUP_CONCAT(ad.referencia separator ',')) Referencia
-    FROM asn_documento ad
-    JOIN asn a ON
-        a.id = ad.id_asn
-    JOIN documento d ON
-        d.id = ad.id_documento
-    GROUP BY a.id, ad.id) tbl GROUP BY tbl.Id_asn
-) rf ON
-    a.id = rf.Id_asn;
-        `, id_almacen_movimiento_grupo, (data) => {
-            callback(data);
-        });
-}
+// Operacion.ubicadosGet = function(id_almacen_movimiento_grupo, callback) {
+//     TableMng.Execute(pool, 
+//         `
+// SELECT DISTINCT
+//      c.nombre Cliente
+//     ,e.id Id_entrada
+//     ,e.folio Folio
+//     ,COALESCE(rf.Referencia, '') Referencias
+// FROM entrada_producto_ubicacion epu 
+// JOIN entrada e ON
+//     e.id = epu.id_entrada
+// JOIN asn a ON
+//     e.id_asn = a.id
+// JOIN cliente c ON
+//     c.id = a.id_cliente
+// JOIN almacen_movimiento am ON
+//     am.id = epu.id_almacen_movimiento
+//     and am.id_grupo = ?
+// LEFT JOIN asn_documento ad ON
+//     ad.id_asn = a.id
+// LEFT JOIN documento d ON
+//     d.id = ad.id_documento
+// LEFT JOIN (
+//     SELECT 
+//         tbl.Id_asn Id_asn
+//         ,GROUP_CONCAT(tbl.Referencia separator ', ') Referencia
+//     FROM (
+//     SELECT
+//         a.id Id_asn
+//         ,CONCAT(d.nombre, ':', GROUP_CONCAT(ad.referencia separator ',')) Referencia
+//     FROM asn_documento ad
+//     JOIN asn a ON
+//         a.id = ad.id_asn
+//     JOIN documento d ON
+//         d.id = ad.id_documento
+//     GROUP BY a.id, ad.id) tbl GROUP BY tbl.Id_asn
+// ) rf ON
+//     a.id = rf.Id_asn;
+//         `, id_almacen_movimiento_grupo, (data) => {
+//             callback(data);
+//         });
+// }
 
 Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrada, callback) {
     TableMng.Execute(pool, 

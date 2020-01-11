@@ -1,6 +1,7 @@
 var Catalogo = require('./control/Catalogo.js')
 var Operacion = require('./control/Operacion.js')
 var Recepcion = require('./control/Recepcion.js')
+var Ubicacion = require('./control/Ubicacion.js')
 
 var Common = require('../common/Common.js');
 
@@ -45,28 +46,28 @@ app.get('/almacen_zona', (req, res) => { Catalogo.Almacen_zonas((data) => res.se
 app.get('/almacen_zona/:id_almacen', (req, res) => { Catalogo.Almacen_zonasByAlmacen(req.params.id_almacen, (data) => res.send(JSON.stringify(data)))})
 // Schedules
 app.get('/asn_schedule', (req, res) => {
-  Operacion.getAsnSchedule((data) => res.send(JSON.stringify(data)))
+  Recepcion.asnGetSchedule((data) => res.send(JSON.stringify(data)))
 })
 app.get('/asn_schedule/:cliente', (req, res) => {
-  Operacion.getAsnScheduleByCliente(req.params.cliente, (data) => res.send(JSON.stringify(data)))
+  Recepcion.asnGetScheduleByCliente(req.params.cliente, (data) => res.send(JSON.stringify(data)))
 })
 // Recepcion en cortinas
 app.get('/asn_rec_cortina', (req, res) => {
-  Operacion.getAsnRecepcionCortina((data) => res.send(JSON.stringify(data)))
+  Recepcion.asnGetRecepcionCortina((data) => res.send(JSON.stringify(data)))
 })
 app.get('/asn_rec_cortina/:almacen', (req, res) => {
-  Operacion.getAsnRecepcionCortinaByAlmacen(req.params.almacen, (data) => res.send(JSON.stringify(data)))
+  Recepcion.asnGetRecepcionCortinaByAlmacen(req.params.almacen, (data) => res.send(JSON.stringify(data)))
 })
 app.get('/asn_rec_cortina_id/:id', (req, res) => {
-  Operacion.getAsnRecepcionCortinaById(req.params.id, (data) => res.send(JSON.stringify(data)))
+  Recepcion.asnGetRecepcionCortinaById(req.params.id, (data) => res.send(JSON.stringify(data)))
 })
 // Recepcion
 app.get('/recibidos', (req, res) => {
-  Operacion.recibidosGet((data) => res.send(JSON.stringify(data)));
+  Recepcion.recibidosGet((data) => res.send(JSON.stringify(data)));
 })
 // Revision de sello
 app.get('/asn_selloSearch/:sello', (req, res) => {
-  Operacion.asnSelloSearch(req.params.sello, (data) => res.send(JSON.stringify(data)))
+  Recepcion.asnSelloSearch(req.params.sello, (data) => res.send(JSON.stringify(data)))
 })
 
 // Operacion
@@ -75,7 +76,7 @@ app.get('/entrada_producto/:id_entrada', (req, res) => {
   Operacion.entrada_productoLstBy(req.params.id_entrada, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/ubicados/:key', (req, res) => { 
-  Operacion.ubicadosGet(req.params.key, (data) => res.send(JSON.stringify(data)));
+  Ubicacion.ubicadosGet(req.params.key, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/productos_ubicados/:gpo/key/:key', (req, res) => { 
   Operacion.productosUbicadosGet(req.params.gpo, req.params.key, (data) => res.send(JSON.stringify(data)));
