@@ -262,6 +262,7 @@ Operacion.SltByAsnDoc = function(id_asn, callback, tran = null) {
     var factory = new Factory();
     var oAsn_doc = factory.CreateObj('Asn_documento');
     var oAsn_docMng = factory.CreateMng(oAsn_doc);
+    
     TableMng.SelectBy(pool, oAsn_docMng, `id_asn = ?`, id_asn, (res) => {
         Catalogo.lstCatalogo('Documento', (data) => {
             for(i in res) {

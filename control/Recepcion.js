@@ -1,5 +1,6 @@
-const path = require('path');
-var Operacion = require('./control/Operacion.js')
+//Pendiente asn compartida para la tabla asn_producto_detalle como en la linea 55
+
+var Operacion = require('./Operacion.js')
 var pool = require('../_common/db.js');
 var Catalogo = require('./Catalogo.js')
 var TableMng = require('../_common/TableMng.js');
@@ -34,7 +35,7 @@ Recepcion.asn_Add = function(obj, callback) {
         TableMng.Action(pool, oAsnMng, 'add', (data) => {
 
             obj.Producto.Id_asn = oAsn.Id;
-            Recepcion.asn_producto_Add(obj.Producto, () => {
+            Recepcion.asn_producto_Add(obj.Producto, (oAP) => {
 
                 // Inicio
                 var lstDoc = [];
@@ -47,11 +48,11 @@ Recepcion.asn_Add = function(obj, callback) {
                     oAsn_doc.Id_asn = data[0].id;
                     lstDoc.push(oAsn_doc);
                 });
-                Recepcion.AsnLstDocAdd(lstDoc, 0, callback, ()=> {
+                Recepcion.AsnLstDocAdd(lstDoc, 0, ()=> {
                     //Agregar producto detalle para las cuentas configuradas
                     if(obj.Producto.Csv_file_detail_prod.name!='') {
                         //Insertar detalle de productos de la cuenta configurada
-                        Recepcion.productoDetalleAdd(obj.Producto.Csv_file_detail_prod.name, oAsn.Id_cliente, obj.Producto.head, oAsn.Id, ()=> {
+                        Recepcion.productoDetalleAdd(obj.Producto.Csv_file_detail_prod.name, oAsn.Id_cliente, obj.Producto.Csv_file_detail_prod.head, oAP.Id, ()=> {
                             callback();    
                         } )
                     } else {
@@ -84,7 +85,7 @@ Recepcion.asnShare_Add = function(obj, callback) {
             });
             lstDoc.push(oAsn_doc);
         });
-        Recepcion.AsnLstDocAdd(lstDoc, 0, callback, ()=> {
+        Recepcion.AsnLstDocAdd(lstDoc, 0, ()=> {
             callback();
         });
         // Fin
@@ -101,7 +102,7 @@ Recepcion.asn_producto_Add = function(obj, callback) {
     
     TableMng.cloneObj(oAP, obj);
     TableMng.Action(pool, oAP_Mng, 'add', () => {
-        if(callback) callback();
+        if(callback) callback(oAP);
     })
 }
 
@@ -123,34 +124,31 @@ Recepcion.AsnLstDocAdd = function(lstAsnDoc, indice, callback, tran = null) {
 
 Recepcion.productoDetalleAdd = function(fileName, id_cliente, header, id_asn_producto, callback, tran = null) {
 
-    var filePathProdDet = path.format({
-        root: '/ignored',
-        dir: __dirname,
-        base: fileName
-    });
-
     var tblName = 'asn_producto_detalle_' + id_cliente;
 
     var colNames = '(';
-
+    
+    console.log(header.length);
     for(h in header) {
-        colNames = header[h];
-        if(h < header.length)
+        colNames += header[h];
+        if(h < header.length -1)
             colNames += ','
     }
-    
-    var qry = `LOAD DATA LOCAL INFILE` + filePathProdDet + `
+    colNames+= ')';
+
+    var qry = `LOAD DATA LOCAL INFILE '` + fileName + `'
     INTO TABLE ` + tblName + `
     FIELDS TERMINATED BY ',' 
     OPTIONALLY ENCLOSED BY '"' 
-    LINES TERMINATED BY '\r\n' ')
+    LINES TERMINATED BY '\\r\\n'
     IGNORE 1 LINES 
     ` + colNames + `
     SET id_asn_producto = ?;`;
 
-    console.log(qry);
-    callback();
-    //TableMng.Execute(pool, qry, id_asn_producto, callback, null);
+    // console.log(qry);
+    TableMng.Execute(pool, qry, id_asn_producto, ()=> {
+        callback();
+    })
 }
 
 module.exports = Recepcion;
