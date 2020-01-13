@@ -73,13 +73,14 @@ app.get('/asn_selloSearch/:sello', (req, res) => {
 // Operacion
 // Get
 app.get('/entrada_producto/:id_entrada', (req, res) => {
-  Operacion.entrada_productoLstBy(req.params.id_entrada, (data) => res.send(JSON.stringify(data)));
+  Recepcion.entrada_productoLstBy(req.params.id_entrada, (data) => res.send(JSON.stringify(data)));
 })
+
 app.get('/ubicados/:key', (req, res) => { 
   Ubicacion.ubicadosGet(req.params.key, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/productos_ubicados/:gpo/key/:key', (req, res) => { 
-  Operacion.productosUbicadosGet(req.params.gpo, req.params.key, (data) => res.send(JSON.stringify(data)));
+  Ubicacion.productosUbicadosGet(req.params.gpo, req.params.key, (data) => res.send(JSON.stringify(data)));
 })
 
 // Post
@@ -97,14 +98,14 @@ app.post('/asn_share', (req, res) => {
 
 app.post('/entrada', (req, res) => {
   console.log(req.body);
-  Operacion.entradaAdd(req.body, () => {
+  Recepcion.entradaAdd(req.body, () => {
     res.send('Ready');
   })
 })
 // Put
 // Ubica recibidos
 app.put('/recibidos_ubica/', (req, res) => {
-  Operacion.recibidosUbica(req.body.id_entrada_producto, req.body.id_almacen_movimiento, (data) => res.send(JSON.stringify(data)));
+  Ubicacion.recibidosUbica(req.body.id_entrada_producto, req.body.id_almacen_movimiento, (data) => res.send(JSON.stringify(data)));
 })
 
 // Recepción

@@ -134,25 +134,25 @@ Operacion.getFolioByTipo = function(tipo, callback) {
 // }
 
 // Entrada
-Operacion.entradaAdd = function(obj, callback) {
-    var factory = new Factory();
-    var oE = factory.CreateObj('Entrada');
+// Operacion.entradaAdd = function(obj, callback) {
+//     var factory = new Factory();
+//     var oE = factory.CreateObj('Entrada');
     
-    Object.keys(obj).forEach(item => {
-        if(oE.hasOwnProperty(item))
-        oE[item] = obj[item];
-    });
-    var oEMng = factory.CreateMng(oE);
+//     Object.keys(obj).forEach(item => {
+//         if(oE.hasOwnProperty(item))
+//         oE[item] = obj[item];
+//     });
+//     var oEMng = factory.CreateMng(oE);
     
-    Operacion.getFolioByTipo('ENT', (folio) => {
+//     Operacion.getFolioByTipo('ENT', (folio) => {
         
-        oE.Folio = folio;
-        TableMng.Action(pool, oEMng, 'add', () => {
-            callback();
-        });
+//         oE.Folio = folio;
+//         TableMng.Action(pool, oEMng, 'add', () => {
+//             callback();
+//         });
 
-    });
-}
+//     });
+// }
 
 // // Schedule
 // Operacion.getAsnSchedule = function(callback) {
@@ -312,62 +312,62 @@ Operacion.entradaAdd = function(obj, callback) {
 //         })
 // }
 
-Operacion.entrada_productoLstBy = function(id_entrada, callback) {
+// Operacion.entrada_productoLstBy = function(id_entrada, callback) {
     
-    TableMng.Execute(pool, `
-    SELECT 
-     ep.id Id_entrada_producto
-	,e.producto Producto
-	,ar.nombre Rotacion
-	,ua.nombre UAlm
-	,ep.folio Folio
-	,ep.cajas Cajas
-    ,ep.piezas Piezas
-	,COALESCE(epu.id_almacen_ubicacion, 0) Ubicado
-FROM entrada_producto ep
-JOIN entrada e ON
-	e.id = ep.id_entrada
-JOIN unidad_almacenamiento ua ON
-	ua.id = ep.id_unidad_almacenamiento
-JOIN almacen_rotacion ar ON
-	ar.id = ep.id_almacen_rotacion
-LEFT JOIN entrada_producto_ubicacion epu ON
-    epu.id_entrada_producto = ep.id
-WHERE ep.id_entrada = ?;
-    `, id_entrada, (res) => {
-        callback(res);
-    })
-}
+//     TableMng.Execute(pool, `
+//     SELECT 
+//      ep.id Id_entrada_producto
+// 	,e.producto Producto
+// 	,ar.nombre Rotacion
+// 	,ua.nombre UAlm
+// 	,ep.folio Folio
+// 	,ep.cajas Cajas
+//     ,ep.piezas Piezas
+// 	,COALESCE(epu.id_almacen_ubicacion, 0) Ubicado
+// FROM entrada_producto ep
+// JOIN entrada e ON
+// 	e.id = ep.id_entrada
+// JOIN unidad_almacenamiento ua ON
+// 	ua.id = ep.id_unidad_almacenamiento
+// JOIN almacen_rotacion ar ON
+// 	ar.id = ep.id_almacen_rotacion
+// LEFT JOIN entrada_producto_ubicacion epu ON
+//     epu.id_entrada_producto = ep.id
+// WHERE ep.id_entrada = ?;
+//     `, id_entrada, (res) => {
+//         callback(res);
+//     })
+// }
 
-Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, callback) {
-    var factory = new Factory();
+// Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, callback) {
+//     var factory = new Factory();
     
-    var oEP = factory.CreateObj('Entrada_producto');
-    oEP.Id = id_entrada_producto;
-    var oEPMng = factory.CreateMng(oEP);
+//     var oEP = factory.CreateObj('Entrada_producto');
+//     oEP.Id = id_entrada_producto;
+//     var oEPMng = factory.CreateMng(oEP);
     
-    var oAU = factory.CreateObj('Almacen_ubicacion');
-    var oAUMng = factory.CreateMng(oAU);
+//     var oAU = factory.CreateObj('Almacen_ubicacion');
+//     var oAUMng = factory.CreateMng(oAU);
 
-    var oEPU = factory.CreateObj('Entrada_producto_ubicacion');
-    var oEPUMng = factory.CreateMng(oEPU);
+//     var oEPU = factory.CreateObj('Entrada_producto_ubicacion');
+//     var oEPUMng = factory.CreateMng(oEPU);
 
-    TableMng.Action(pool, oEPMng, 'get', ()=> {
-        TableMng.SelectBy(pool, oAUMng, `id_almacen_rotacion = ?
-        AND referencia IS NULL LIMIT 1;`, oEP.Id_almacen_rotacion, () => {
-            oAU.Referencia = oEP.Folio;
-            TableMng.Action(pool, oAUMng, 'udt', ()  => {
-                oEPU.Id_entrada = oEP.Id_entrada;
-                oEPU.Id_entrada_producto = oEP.Id;
-                oEPU.Id_almacen_ubicacion = oAU.Id;  
-                oEPU.Id_almacen_movimiento = id_almacen_movimiento;  
-                TableMng.Action(pool, oEPUMng, 'add', ()=> {
-                    callback(oEPU);
-                })
-            })
-        })
-    })
-}
+//     TableMng.Action(pool, oEPMng, 'get', ()=> {
+//         TableMng.SelectBy(pool, oAUMng, `id_almacen_rotacion = ?
+//         AND referencia IS NULL LIMIT 1;`, oEP.Id_almacen_rotacion, () => {
+//             oAU.Referencia = oEP.Folio;
+//             TableMng.Action(pool, oAUMng, 'udt', ()  => {
+//                 oEPU.Id_entrada = oEP.Id_entrada;
+//                 oEPU.Id_entrada_producto = oEP.Id;
+//                 oEPU.Id_almacen_ubicacion = oAU.Id;  
+//                 oEPU.Id_almacen_movimiento = id_almacen_movimiento;  
+//                 TableMng.Action(pool, oEPUMng, 'add', ()=> {
+//                     callback(oEPU);
+//                 })
+//             })
+//         })
+//     })
+// }
 
 // Operacion.ubicadosGet = function(id_almacen_movimiento_grupo, callback) {
 //     TableMng.Execute(pool, 
@@ -412,32 +412,32 @@ Operacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, 
 //         });
 // }
 
-Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrada, callback) {
-    TableMng.Execute(pool, 
-        `
-    SELECT
-        ep.id_entrada Id_entrada
-       ,ep.id Id_entrada_producto
-       ,ep.folio Folio
-       ,am.nombre Metodo
-       ,ua.nombre Formato
-       ,ep.cajas Cajas
-       ,ep.piezas Piezas
-   FROM 
-   entrada_producto ep
-   JOIN entrada_producto_ubicacion epu ON
-       epu.id_entrada_producto = ep.id
-   JOIN almacen_movimiento amov ON
-       amov.id = epu.id_almacen_movimiento
-       and amov.id_grupo = ?
-   JOIN almacen_metodo am ON
-       am.id = ep.id_unidad_almacenamiento
-   JOIN unidad_almacenamiento ua ON
-       ua.id = ep.id_unidad_almacenamiento
-   WHERE ep.id_entrada = ?;
-        `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
-            callback(data);
-        });
-}
+// Operacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrada, callback) {
+//     TableMng.Execute(pool, 
+//         `
+//     SELECT
+//         ep.id_entrada Id_entrada
+//        ,ep.id Id_entrada_producto
+//        ,ep.folio Folio
+//        ,am.nombre Metodo
+//        ,ua.nombre Formato
+//        ,ep.cajas Cajas
+//        ,ep.piezas Piezas
+//    FROM 
+//    entrada_producto ep
+//    JOIN entrada_producto_ubicacion epu ON
+//        epu.id_entrada_producto = ep.id
+//    JOIN almacen_movimiento amov ON
+//        amov.id = epu.id_almacen_movimiento
+//        and amov.id_grupo = ?
+//    JOIN almacen_metodo am ON
+//        am.id = ep.id_unidad_almacenamiento
+//    JOIN unidad_almacenamiento ua ON
+//        ua.id = ep.id_unidad_almacenamiento
+//    WHERE ep.id_entrada = ?;
+//         `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
+//             callback(data);
+//         });
+// }
 
 module.exports = Operacion;

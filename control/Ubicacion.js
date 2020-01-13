@@ -46,4 +46,62 @@ LEFT JOIN (
         });
 }
 
+Ubicacion.recibidosUbica = function(id_entrada_producto, id_almacen_movimiento, callback) {
+    var factory = new Factory();
+    
+    var oEP = factory.CreateObj('Entrada_producto');
+    oEP.Id = id_entrada_producto;
+    var oEPMng = factory.CreateMng(oEP);
+    
+    var oAU = factory.CreateObj('Almacen_ubicacion');
+    var oAUMng = factory.CreateMng(oAU);
+
+    var oEPU = factory.CreateObj('Entrada_producto_ubicacion');
+    var oEPUMng = factory.CreateMng(oEPU);
+
+    TableMng.Action(pool, oEPMng, 'get', ()=> {
+        TableMng.SelectBy(pool, oAUMng, `id_almacen_rotacion = ?
+        AND referencia IS NULL LIMIT 1;`, oEP.Id_almacen_rotacion, () => {
+            oAU.Referencia = oEP.Folio;
+            TableMng.Action(pool, oAUMng, 'udt', ()  => {
+                oEPU.Id_entrada = oEP.Id_entrada;
+                oEPU.Id_entrada_producto = oEP.Id;
+                oEPU.Id_almacen_ubicacion = oAU.Id;  
+                oEPU.Id_almacen_movimiento = id_almacen_movimiento;  
+                TableMng.Action(pool, oEPUMng, 'add', ()=> {
+                    callback(oEPU);
+                })
+            })
+        })
+    })
+}
+
+Ubicacion.productosUbicadosGet = function(id_almacen_movimiento_grupo, id_entrada, callback) {
+    TableMng.Execute(pool, 
+        `
+    SELECT
+        ep.id_entrada Id_entrada
+       ,ep.id Id_entrada_producto
+       ,ep.folio Folio
+       ,am.nombre Metodo
+       ,ua.nombre Formato
+       ,ep.cajas Cajas
+       ,ep.piezas Piezas
+   FROM 
+   entrada_producto ep
+   JOIN entrada_producto_ubicacion epu ON
+       epu.id_entrada_producto = ep.id
+   JOIN almacen_movimiento amov ON
+       amov.id = epu.id_almacen_movimiento
+       and amov.id_grupo = ?
+   JOIN almacen_metodo am ON
+       am.id = ep.id_unidad_almacenamiento
+   JOIN unidad_almacenamiento ua ON
+       ua.id = ep.id_unidad_almacenamiento
+   WHERE ep.id_entrada = ?;
+        `, [id_almacen_movimiento_grupo, id_entrada], (data) => {
+            callback(data);
+        });
+}
+
 module.exports = Ubicacion;

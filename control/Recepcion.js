@@ -333,4 +333,52 @@ having count(ep.id) - count(epu.id) != 0 ) u ON
         })
 }
 
+Recepcion.entrada_productoLstBy = function(id_entrada, callback) {
+    
+    TableMng.Execute(pool, `
+    SELECT 
+     ep.id Id_entrada_producto
+	,e.producto Producto
+	,ar.nombre Rotacion
+	,ua.nombre UAlm
+	,ep.folio Folio
+	,ep.cajas Cajas
+    ,ep.piezas Piezas
+	,COALESCE(epu.id_almacen_ubicacion, 0) Ubicado
+FROM entrada_producto ep
+JOIN entrada e ON
+	e.id = ep.id_entrada
+JOIN unidad_almacenamiento ua ON
+	ua.id = ep.id_unidad_almacenamiento
+JOIN almacen_rotacion ar ON
+	ar.id = ep.id_almacen_rotacion
+LEFT JOIN entrada_producto_ubicacion epu ON
+    epu.id_entrada_producto = ep.id
+WHERE ep.id_entrada = ?;
+    `, id_entrada, (res) => {
+        callback(res);
+    })
+}
+
+// Entrada
+Recepcion.entradaAdd = function(obj, callback) {
+    var factory = new Factory();
+    var oE = factory.CreateObj('Entrada');
+    
+    Object.keys(obj).forEach(item => {
+        if(oE.hasOwnProperty(item))
+        oE[item] = obj[item];
+    });
+    var oEMng = factory.CreateMng(oE);
+    
+    Operacion.getFolioByTipo('ENT', (folio) => {
+        
+        oE.Folio = folio;
+        TableMng.Action(pool, oEMng, 'add', () => {
+            callback();
+        });
+
+    });
+}
+
 module.exports = Recepcion;
