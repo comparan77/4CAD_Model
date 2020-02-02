@@ -1,5 +1,5 @@
 var Catalogo = require('./control/Catalogo.js')
-var Operacion = require('./control/Operacion.js')
+//var Operacion = require('./control/Operacion.js')
 var Recepcion = require('./control/Recepcion.js')
 var Ubicacion = require('./control/Ubicacion.js')
 
@@ -22,7 +22,7 @@ app.use(express.urlencoded({ extended: false }))
 // app.use(bodyParser.json());
 app.use(express.json());
 
-// Catálogos
+/** CATALOGOS */
 // Get
 app.get('/almacen', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(JSON.stringify(data))));
 app.get('/aduana', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(JSON.stringify(data))));
@@ -44,7 +44,15 @@ app.get('/almacen_ubicacionBuildByZona/:id_almacen_zona', (req, res) => {
 })
 app.get('/almacen_zona', (req, res) => { Catalogo.Almacen_zonas((data) => res.send(JSON.stringify(data)))})
 app.get('/almacen_zona/:id_almacen', (req, res) => { Catalogo.Almacen_zonasByAlmacen(req.params.id_almacen, (data) => res.send(JSON.stringify(data)))})
-// Schedules
+
+// Para catalogos
+function getStrReq(req) {
+  var strReq = req.originalUrl;
+  strReq = Common.Capitalize(strReq.replace('/',''));
+  return strReq;
+}
+
+/** RECEPCION */
 app.get('/asn_schedule', (req, res) => {
   Recepcion.asnGetSchedule((data) => res.send(JSON.stringify(data)))
 })
@@ -69,45 +77,28 @@ app.get('/recibidos', (req, res) => {
 app.get('/asn_selloSearch/:sello', (req, res) => {
   Recepcion.asnSelloSearch(req.params.sello, (data) => res.send(JSON.stringify(data)))
 })
-
 // Operacion
 // Get
 app.get('/entrada_producto/:id_entrada', (req, res) => {
   Recepcion.entrada_productoLstBy(req.params.id_entrada, (data) => res.send(JSON.stringify(data)));
 })
-
-app.get('/ubicados/:key', (req, res) => { 
-  Ubicacion.ubicadosGet(req.params.key, (data) => res.send(JSON.stringify(data)));
-})
-app.get('/productos_ubicados/:gpo/key/:key', (req, res) => { 
-  Ubicacion.productosUbicadosGet(req.params.gpo, req.params.key, (data) => res.send(JSON.stringify(data)));
-})
-
 // Post
 app.post('/asn', (req, res) => {
   Recepcion.asn_Add(req.body, () => {
     res.send('Ready');
   });
 });
-
 app.post('/asn_share', (req, res) => {
   Recepcion.asnShare_Add(req.body, () => {
     res.send('Ready');
   });
 });
-
 app.post('/entrada', (req, res) => {
   console.log(req.body);
   Recepcion.entradaAdd(req.body, () => {
     res.send('Ready');
   })
 })
-// Put
-// Ubica recibidos
-app.put('/recibidos_ubica/', (req, res) => {
-  Ubicacion.recibidosUbica(req.body.id_entrada_producto, req.body.id_almacen_movimiento, (data) => res.send(JSON.stringify(data)));
-})
-
 // Recepción
 app.get('/asn_producto_detalle_by_cte/:key', (req, res) => {
   Recepcion.asn_producto_detalle_by_cte(req.params.key, (data) => {
@@ -115,11 +106,17 @@ app.get('/asn_producto_detalle_by_cte/:key', (req, res) => {
   })
 })
 
-// Para catalogos
-function getStrReq(req) {
-    var strReq = req.originalUrl;
-    strReq = Common.Capitalize(strReq.replace('/',''));
-    return strReq;
-}
+//** UBICACION */
+app.get('/ubicados/:key', (req, res) => { 
+  Ubicacion.ubicadosGet(req.params.key, (data) => res.send(JSON.stringify(data)));
+})
+app.get('/productos_ubicados/:gpo/key/:key', (req, res) => { 
+  Ubicacion.productosUbicadosGet(req.params.gpo, req.params.key, (data) => res.send(JSON.stringify(data)));
+})
+// Put
+// Ubica recibidos
+app.put('/recibidos_ubica/', (req, res) => {
+  Ubicacion.recibidosUbica(req.body.id_entrada_producto, req.body.id_almacen_movimiento, (data) => res.send(JSON.stringify(data)));
+})
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
