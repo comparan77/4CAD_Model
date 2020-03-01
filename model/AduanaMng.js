@@ -9,6 +9,9 @@ function AduanaMng (o, lst = null) {
 		Codigo: '',
 		Nombre: '',
 	}
+
+	this.QrySelBy = 'select Id, Codigo, Nombre FROM aduana WHERE ';
+
 };
 AduanaMng.prototype = Object.create(BaseMng.prototype);
 AduanaMng.prototype.constructor = AduanaMng;
