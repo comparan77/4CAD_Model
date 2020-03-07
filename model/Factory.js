@@ -52,6 +52,9 @@ var Entrada_producto_ubicacionMng = require('./Entrada_producto_ubicacionMng.js'
 var Folio = require('./Folio.js');
 var FolioMng = require('./FolioMng.js');
 
+var TransporteLinea = require('./TransporteLinea.js');
+var TransporteLineaMng = require('./TransporteLineaMng.js');
+
 var Transporte_linea = require('./Transporte_linea.js');
 var Transporte_lineaMng = require('./Transporte_lineaMng.js');
 
@@ -125,6 +128,9 @@ function Factory() {
 				break;
 			case 'Folio':
 				o = new Folio();
+				break;
+			case 'TransporteLinea':
+				o = new TransporteLinea();
 				break;
 			case 'Transporte_linea':
 				o = new Transporte_linea();
@@ -202,6 +208,9 @@ function Factory() {
 				break;
 			case 'Folio':
 				oMng = new FolioMng(o);
+				break;
+			case 'TransporteLinea':
+				oMng = new TransporteLineaMng(o);
 				break;
 			case 'Transporte_linea':
 				oMng = new Transporte_lineaMng(o);

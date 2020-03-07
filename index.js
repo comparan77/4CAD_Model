@@ -29,8 +29,8 @@ app.get('/aduana', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => 
 app.get('/cliente', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(JSON.stringify(data))));
 app.get('/documento', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(JSON.stringify(data))));
 app.get('/vendor', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(JSON.stringify(data))));
-app.get('/transporte_linea', (req, res) => Catalogo.lstCatalogo(getStrReq(req), (data) => res.send(JSON.stringify(data))));
-app.get('/transporte_linea_tipo/:id', (req, res) => {
+app.get('/transportelinea', (req, res) => Catalogo.lstCatalogo('TransporteLinea', (data) => res.send(JSON.stringify(data))));
+app.get('/transportelineatipo/:id', (req, res) => {
   Catalogo.GetTransporteTipoByLinea(req.params.id, (data) => res.send(JSON.stringify(data)));
 })
 app.get('/vendor_producto/:id', (req, res) => {

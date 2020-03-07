@@ -1,7 +1,7 @@
 function Almacen() { 
-	this.Id = null;
-	this.Nombre = null;
-	this.Direccion = null;
+	this.AlmacenId = null;
+	this.AlmacenNombre = null;
+	this.AlmacenDireccion = null;
 	this.IsActive = null;
 }; 
 module.exports = Almacen;
