@@ -34,6 +34,12 @@ var Asn_productoMng = require('./Asn_productoMng.js');
 var Cliente = require('./Cliente.js');
 var ClienteMng = require('./ClienteMng.js');
 
+var ClienteVendor = require('./ClienteVendor.js');
+var ClienteVendorMng = require('./ClienteVendorMng.js');
+
+var Cortina = require('./Cortina.js');
+var CortinaMng = require('./CortinaMng.js');
+
 var Documento = require('./Documento.js');
 var DocumentoMng = require('./DocumentoMng.js');
 
@@ -54,6 +60,12 @@ var FolioMng = require('./FolioMng.js');
 
 var TransporteLinea = require('./TransporteLinea.js');
 var TransporteLineaMng = require('./TransporteLineaMng.js');
+
+var TransporteLineaTipo = require('./TransporteLineaTipo.js');
+var TransporteLineaTipoMng = require('./TransporteLineaTipoMng.js');
+
+var TransporteTipo = require('./TransporteTipo.js');
+var TransporteTipoMng = require('./TransporteTipoMng.js');
 
 var Transporte_linea = require('./Transporte_linea.js');
 var Transporte_lineaMng = require('./Transporte_lineaMng.js');
@@ -111,6 +123,12 @@ function Factory() {
 			case 'Cliente':
 				o = new Cliente();
 				break;
+			case 'ClienteVendor':
+				o = new ClienteVendor();
+				break;
+			case 'Cortina':
+				o = new Cortina();
+				break;
 			case 'Documento':
 				o = new Documento();
 				break;
@@ -131,6 +149,12 @@ function Factory() {
 				break;
 			case 'TransporteLinea':
 				o = new TransporteLinea();
+				break;
+			case 'TransporteLineaTipo':
+				o = new TransporteLineaTipo();
+				break;
+			case 'TransporteTipo':
+				o = new TransporteTipo();
 				break;
 			case 'Transporte_linea':
 				o = new Transporte_linea();
@@ -191,6 +215,12 @@ function Factory() {
 			case 'Cliente':
 				oMng = new ClienteMng(o);
 				break;
+			case 'ClienteVendor':
+				oMng = new ClienteVendorMng(o);
+				break;
+			case 'Cortina':
+				oMng = new CortinaMng(o);
+				break;
 			case 'Documento':
 				oMng = new DocumentoMng(o);
 				break;
@@ -211,6 +241,12 @@ function Factory() {
 				break;
 			case 'TransporteLinea':
 				oMng = new TransporteLineaMng(o);
+				break;
+			case 'TransporteLineaTipo':
+				oMng = new TransporteLineaTipoMng(o);
+				break;
+			case 'TransporteTipo':
+				oMng = new TransporteTipoMng(o);
 				break;
 			case 'Transporte_linea':
 				oMng = new Transporte_lineaMng(o);
