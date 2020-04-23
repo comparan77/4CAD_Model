@@ -1,19 +1,22 @@
 var BaseMng = require('../_common/basemng.js');
 
 function DocumentoMng (o, lst = null) {
-	BaseMng.call(this, o, 'documento', lst);
+	BaseMng.call(this, o, 'Documento', lst);
 
 	this.Params = {
 		Option: 0,
-		Id: 0,
-		Nombre: '',
+		DocumentoId: 0,
+		DocumentoNombre: '',
 	}
+
+	this.QrySelBy = 'select DocumentoId, DocumentoNombre FROM Documento WHERE ';
+
 };
 DocumentoMng.prototype = Object.create(BaseMng.prototype);
 DocumentoMng.prototype.constructor = DocumentoMng;
 DocumentoMng.prototype.fillParameters = function(option) {
 	this.Params.Option = option;
-	this.Params.Id = this.obj.Id == null ? this.Params.Id : this.obj.Id;
-	this.Params.Nombre = this.obj.Nombre == null ? this.Params.Nombre : this.obj.Nombre;
+	this.Params.DocumentoId = this.obj.DocumentoId == null ? this.Params.DocumentoId : this.obj.DocumentoId;
+	this.Params.DocumentoNombre = this.obj.DocumentoNombre == null ? this.Params.DocumentoNombre : this.obj.DocumentoNombre;
 }
 module.exports = DocumentoMng;
