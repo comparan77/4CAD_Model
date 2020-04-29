@@ -162,7 +162,7 @@ Recepcion.asnSelloSearch = function(sello, callback) {
     var oAsn = factory.CreateObj('Asn');
     var oAsnMng = factory.CreateMng(oAsn);
 
-    TableMng.SelectBy(pool, oAsnMng, 'sello_cte_dt = ?', sello, (res)=> {
+    TableMng.SelectBy(pool, oAsnMng, 'AsnSelloClienteDateTime = ?', sello, (res)=> {
         if(oAsn.Id > 0) {
             var oAsnDoc = factory.CreateObj('Asn_documento');
             var oAsnDocMng = factory.CreateMng(oAsnDoc);
